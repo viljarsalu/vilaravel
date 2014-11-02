@@ -6,7 +6,7 @@
 
     <h2>{{Lang::get('text.sign_up')}}</h2>
 
-    {{ Form::open(array('url'=>'users/create', 'role'=>'form')) }}
+    {{ Form::open(array('url'=>'users/create', 'role'=>'form', 'id'=>'signup')) }}
     
     <div class="form-group">
         {{ Form::label('first_name', Lang::get('text.first_name')) }}
@@ -29,6 +29,8 @@
         {{ Form::password('password_confirmation', array('class'=>'form-control holo', 'placeholder'=>Lang::get('text.confirm_password'),'id'=>'password_confirmation')) }}
     </div>
 
+    <hr style="border:1px solid red;" />
+    
     <div class="radio">
       <label>
         {{ Form::radio('sex', 'female'); }}
@@ -67,7 +69,9 @@
             @endfor
          </select>
     </div>
-    
+
+    <hr style="border:1px solid red;" />
+
     <!-- address fill automaticaly. use google geolocation -->
     <div class="form-group">
         {{ Form::label('street', Lang::get('text.street')) }}

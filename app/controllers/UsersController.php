@@ -12,51 +12,46 @@ class UsersController extends BaseController {
 		return Redirect::to('/');
 	}
     public function getRegister() {
-	    $this->layout->title = '';
-	   	$this->layout->metaDescription = Lang::get('text.meta_content');
-	   	$this->layout->metaKeywords = Lang::get('text.keywords');
-	    $this->layout->content = View::make('users.register');
+	    $this->layout->title = 'tere tulemast!';
+	   	$this->layout->metaDescription = Lang::get('text.meta_content') . ' ';
+	   	$this->layout->metaKeywords = Lang::get('text.keywords') . ' ';
+	   	$this->layout->content = View::make('users.register');
 	}
 
 	public function postCreate() {
 
     	$validator = Validator::make(Input::all(), User::$rules);
 
- 		//return Input::all();
  		if ($validator->passes()) {
-		    $user = new User;
-		    $user->first_name = Input::get('first_name');
-		    $user->last_name = Input::get('last_name');
-		    $user->email = Input::get('email');
-		    $user->password = Hash::make(Input::get('password'));
 
-		    //users additional data
-		    $user->sex = Input::get('sex');
-		    $user->birth_day = Input::get('birth_day');
-            $user->birth_month = Input::get('birth_month');
-            $user->birth_year = Input::get('birth_year');
+ 			$user = new User;
+			$user->first_name = Input::get('first_name');
+			$user->last_name = Input::get('last_name');
+			$user->email = Input::get('email');
+			$user->password = Hash::make(Input::get('password'));
+			//$user->save(); 
 
-            // address
-		    $user->country = ( Input::get('country') ? Input::get('country') : 'Eesti');
-		    $user->county = Input::get('county');
-		    $user->city = Input::get('city');
-		    $user->street = Input::get('street');
-		    $user->postindex = Input::get('postindex');
-			$user->created_at = new DateTime;
-		    $user->updated_at = new DateTime;
-		    $user->save();
+ 			if( $user->save() ) 
+ 			{
+ 				//users additional info
+			    $userinfo = new Userinfo;
+			    $userinfo->sex = Input::get('sex');
+			    $userinfo->birth_day = Input::get('birth_day');
+	            $userinfo->birth_month = Input::get('birth_month');
+	            $userinfo->birth_year = Input::get('birth_year');
+	            $userinfo->user()->associate($user)->save();
+ 			} else {
+ 				return Redirect::to('users/register')->with('errormessage', 'The following errors occurred')->withErrors($validator)->withInput();
+ 			}
+
 		    return Redirect::to('/')->with('message', Lang::get('text.thanks_for_registrering') );
-
+		    
 		} else {
 		    return Redirect::to('users/register')->with('errormessage', 'The following errors occurred')->withErrors($validator)->withInput();
 		}
 	}
 
 	public function getLogin() {
-		/*$this->layout->title = 'login title';
-		$this->layout->desc = "";
-		$this->layout->contextMenu = '';
-	    $this->layout->content = View::make('/');*/
 	    if ( Auth::check() )
 	    {
 	    	return Redirect::to('/')->with('message', 'Thanks for registering!');
@@ -66,7 +61,6 @@ class UsersController extends BaseController {
 	}
 
 	public function postSignin() {
-        //return 'sing:' . Input::all();
         if (Auth::attempt(array('email'=>Input::get('email'), 'password'=>Input::get('password')))) {
 		    return Redirect::to('users/dashboard')->with('message', Lang::get('text.welcome_message_for_user'));
 		} else {
@@ -83,79 +77,14 @@ class UsersController extends BaseController {
 			return Redirect::to('/')->with('errormessage', Lang::get('text.please_log_in') );
 		}
 
-		$user = Auth::user();
-		$user = User::find($user->id);
+		$user_id = Auth::user()->id;
+		$user = User::find($user_id);
+		$usr = $user->get();
 
-		$posts = $user->posts;
-		$bookmarks = $user->bookmarks;
-		//echo $posts;
-		
-		$pageData = [];
-
-		foreach ($posts as $key => $value) {
-			/*echo $value->tags;
-			echo $key;*/
-			$oldPost = $this->isPostOld($value->payments[0]->best_before);
-			//echo $value->payments[0]->best_before;
-			$test = $value->tags;
-			if( count($test) > 0 ){
-				$k = $value->tags[0]->title;
-				$data = [];
-				array_push($data, [
-					'category' 		=> $value->category,
-					'product_tag' 	=> $value->tags[0]->title,
-					'post_id' 		=> $value->id,
-					'title' 		=> $value->title,
-					'content' 		=> $value->content,
-					'price' 		=> $value->price,
-					'unit' 			=> $value->unit,
-					'public' 		=> $value->public,
-					'created_at' 	=> $value->created_at,
-					'post_user' 	=> User::find($value->user_id),
-					'old_post'		=> $oldPost,
-					'best_before'	=> $value->payments[0]->best_before
-				]);
-
-				$pageData[$k][] = $data;
-			}
-			
-		}
-		//print_r($pageData);
-		/*echo "<hr/>";
-		return "test";*/
-
-		$bookmakrslist = [];
-		foreach ($bookmarks as $key => $value) {
-			$postid = $value->post_id;
-			$postData = Post::find($postid);
-
-			array_push($bookmakrslist, [
-				'post_id' 	=> $postData->id,
-				'category' 	=> $postData->category,
-				'title' 	=> $postData->title,
-				'content' 	=> $postData->content,
-				'price' 	=> $postData->price,
-				'unit' 		=> $postData->unit,
-				'product_tag' 	=> $postData->tags[0]->title,
-				'highlight' 	=> $postData->id,
-				'public' 		=> $postData->public,
-				'created_at' 	=> $postData->created_at,
-				'post_user' => User::find($postData->user_id)
-			]);
-		}
-		// siia koik kasutaja postid, lemmikud
-		$rawData = [];
-		array_push($rawData, [
-			'posts' => ( count($pageData) > 0 ? $pageData : 'empty'),
-			'bookmarks' => ( count($bookmakrslist) > 0 ? $bookmakrslist : 'empty'),
-		]);
-
-		/*print_r($rawData);
-		return "end";*/
-    	$this->layout->title = '';
-	   	$this->layout->metaDescription = Lang::get('text.meta_content');
-	   	$this->layout->metaKeywords = Lang::get('text.keywords');
-    	$this->layout->content = View::make('users.dashboard', array('rawData' => $rawData) );
+		$this->layout->title = 'tere tulemast!';
+	   	$this->layout->metaDescription = Lang::get('text.meta_content') . ' ';
+	   	$this->layout->metaKeywords = Lang::get('text.keywords') . ' ';
+	   	$this->layout->content = View::make('users.dashboard', array('user'=>$usr,'userinfo'=>$user->userinfo));
 	}
 
 	public function getList() {
@@ -191,6 +120,14 @@ class UsersController extends BaseController {
 		}
 		
 	}
+
+
+
+
+
+
+
+
 	public function postUpdate() {
     	$update_info = array(
 		    'first_name' 	=> Input::get('firstname'),

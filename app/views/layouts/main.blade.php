@@ -61,7 +61,7 @@
           <!-- Collect the nav links, forms, and other content for toggling -->
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-              <li class="active"><a href="#">Link</a></li>
+              <li class="active"><a href="/users/register">sign up</a></li>
               <li><a href="#">Link</a></li>
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
@@ -76,12 +76,18 @@
                 </ul>
               </li>
             </ul>
-            <form class="navbar-form navbar-left" role="search">
+            @if( Auth::guest() )
+            {{ Form::open( array('url'=>'users/signin', 'role'=>'form', 'class'=>'navbar-form form-inline navbar-right') ) }}
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="Search">
+                {{ Form::text('email', null, array('class'=>'form-control input-sm', 'placeholder'=>Lang::get('text.email'), 'id'=>'email' ) ) }}
               </div>
-              <button type="submit" class="btn btn-default">Submit</button>
-            </form>
+              <div class="form-group">
+                {{ Form::text('password', null, array('class'=>'form-control input-sm', 'placeholder'=>Lang::get('text.password'), 'id'=>'password' ) ) }}
+              </div>
+              {{ Form::submit( Lang::get('text.login'), array('class'=>'btn btn-default btn-sm') ) }}
+            {{ Form::close() }}
+            @endif
+
             <ul class="nav navbar-nav navbar-right">
               <li><a href="#">Link</a></li>
               <li class="dropdown">
