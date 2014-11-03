@@ -79,8 +79,8 @@ class UsersController extends BaseController {
 
 		$user_id = Auth::user()->id;
 		$user = User::find($user_id);
-		$usr = $user->get();
 
+		$usr = $user->get();
 		$this->layout->title = 'tere tulemast!';
 	   	$this->layout->metaDescription = Lang::get('text.meta_content') . ' ';
 	   	$this->layout->metaKeywords = Lang::get('text.keywords') . ' ';
