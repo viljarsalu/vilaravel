@@ -16,3 +16,6 @@ Route::get('/', 'HomeController@getIndex');
 
 // users
 Route::controller('users', 'UsersController');
+
+// password reminder
+Route::controller('password', 'RemindersController');

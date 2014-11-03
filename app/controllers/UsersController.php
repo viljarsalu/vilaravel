@@ -125,9 +125,6 @@ class UsersController extends BaseController {
 
 
 
-
-
-
 	public function postUpdate() {
     	$update_info = array(
 		    'first_name' 	=> Input::get('firstname'),
