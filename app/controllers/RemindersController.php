@@ -1,6 +1,6 @@
 <?php
 
-class RemindersController extends Controller {
+class RemindersController extends \BaseController {
 	
 	protected $layout = 'layouts.main';
 
@@ -41,16 +41,16 @@ class RemindersController extends Controller {
 	 * @param  string  $token
 	 * @return Response
 	 */
-	public function getReset($token = null)
+	public function getReset()
 	{
 		
-		if (is_null($token)) App::abort(404);
+		//if (is_null($token)) App::abort(404);
 
-		/*$this->layout->title = 'Password Reset';
+		$this->layout->title = 'Password Reset';
 	   	$this->layout->metaDescription = Lang::get('text.meta_content') . ' ';
 	   	$this->layout->metaKeywords = Lang::get('text.keywords') . ' ';
-	   	$this->layout->content = View::make('password.reset');*/
-		return View::make('password.reset')->with('token', $token);
+	   	$this->layout->content = View::make('password.reset');
+		//return View::make('password.reset')->with('token', $token);
 	}
 
 	/**

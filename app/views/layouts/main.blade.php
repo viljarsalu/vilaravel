@@ -67,12 +67,11 @@
               @else
               <li class=""><a href="/users/logout">log out</a></li>
               @endif
-              <li><a href="#">Link</a></li>
+              <li><a href="/email/feedback">Send feedback</a></li>
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
-                  <li><a href="users/dashboard">dashboard</a></li>
-                  <li><a href="#">Another action</a></li>
+                  <li><a href="/users/dashboard">dashboard</a></li>
                   <li><a href="#">Something else here</a></li>
                   <li class="divider"></li>
                   <li><a href="#">Separated link</a></li>

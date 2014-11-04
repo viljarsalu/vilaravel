@@ -19,3 +19,6 @@ Route::controller('users', 'UsersController');
 
 // password reminder
 Route::controller('password', 'RemindersController');
+
+// email
+Route::controller('email', 'SendEmail');
