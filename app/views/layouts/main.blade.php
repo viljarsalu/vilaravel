@@ -55,31 +55,16 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">vilaravel</a>
+            <a class="navbar-brand" href="/">vilaravel</a>
           </div>
 
           <!-- Collect the nav links, forms, and other content for toggling -->
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-              @if ( Auth::guest() )
-              <li class="active"><a href="/users/register">sign up</a></li>
-              <li class=""><a href="/users/login">login</a></li>
-              @else
-              <li class=""><a href="/users/logout">log out</a></li>
-              @endif
+              <li><a href="/">link</a></li>
               <li><a href="/email/feedback">Send feedback</a></li>
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
-                <ul class="dropdown-menu" role="menu">
-                  <li><a href="/users/dashboard">dashboard</a></li>
-                  <li><a href="#">Something else here</a></li>
-                  <li class="divider"></li>
-                  <li><a href="#">Separated link</a></li>
-                  <li class="divider"></li>
-                  <li><a href="#">One more separated link</a></li>
-                </ul>
-              </li>
             </ul>
+
             @if( Auth::guest() )
             {{ Form::open( array('url'=>'users/signin', 'role'=>'form', 'class'=>'navbar-form form-inline navbar-right') ) }}
               <div class="form-group">
@@ -93,18 +78,21 @@
             @endif
 
             <ul class="nav navbar-nav navbar-right">
-              <li><a href="#">Link</a></li>
+              @if ( Auth::guest() )
+              <li><a href="/users/register">sign up</a></li>
+              <li><p class="navbar-text">-OR-</p></li>
+              @else
               <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ Auth::user()->email }} <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
-                  <li><a href="#">Action</a></li>
-                  <li><a href="#">Another action</a></li>
-                  <li><a href="#">Something else here</a></li>
+                  <li><a href="/users/dashboard">dashboard</a></li>
                   <li class="divider"></li>
-                  <li><a href="#">Separated link</a></li>
+                  <li class=""><a href="/users/logout">log out</a></li>
                 </ul>
               </li>
+              @endif
             </ul>
+
           </div><!-- /.navbar-collapse -->
         </div>
       </nav>

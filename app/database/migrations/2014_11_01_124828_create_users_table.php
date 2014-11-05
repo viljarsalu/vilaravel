@@ -15,12 +15,12 @@ class CreateUsersTable extends Migration {
 		Schema::create('users', function($table)
         {
 	        $table->engine = 'InnoDB';
-	        //$table->text('remember_token')->nullable();
 	        $table->increments('id');
 	        $table->string('first_name');
 	        $table->string('last_name');
 	        $table->string('email');
 	        $table->string('password');
+	        $table->string('remember_token', 100)->nullable();
 	        $table->timestamps();
 	    });
 	}

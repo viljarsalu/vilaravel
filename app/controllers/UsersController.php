@@ -99,11 +99,11 @@ class UsersController extends BaseController {
 	public function getLogout() {
     	Auth::logout();
     	Session::flush();
-    	$this->layout->title = '';
+    	/*$this->layout->title = '';
 	   	$this->layout->metaDescription = Lang::get('text.meta_content');
 	   	$this->layout->metaKeywords = Lang::get('text.keywords');
-	    $this->layout->content = View::make('users/logout');
-    	//return Redirect::to('/')->with('message', 'Your are now logged out! See you soon!');
+	    $this->layout->content = View::make('users/logout');*/
+    	return Redirect::to('/')->with('message', 'Your are now logged out! See you soon!');
 	}
 
 	public function getUpdate() {

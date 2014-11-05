@@ -1,11 +1,23 @@
 <div class="row">
 	<div class="col-md-12">
-		@if (Session::has('error'))
-		  {{ trans(Session::get('reason')) }}
-		@endif
+		<h1>Set Your New Password</h1>
+
+		<div style="border:1px solid blue;">
+			@if (Session::has('error'))
+			  {{ trans(Session::get('reason')) }}
+			@endif
+		</div>
+
+		<div style="border:1px solid red;">
+			@if (Session::has('error'))
+				<p style="color: red;">{{ Session::get('error') }}</p>
+			@endif
+		</div>
 		 
 		{{ Form::open( array( 'url' => array('password/reset','role'=>'form', 'id'=>'reset') ) ) }}
-		
+
+		<input type="hidden" name="token" value="{{ $token }}">
+
 		<div class="form-group">
 		  	{{ Form::label('email', Lang::get('text.email')) }}
         	{{ Form::text('email', null, array('class'=>'form-control', 'placeholder'=>Lang::get('text.email_address'),'id'=>'email')) }}

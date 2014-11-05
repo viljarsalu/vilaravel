@@ -1,8 +1,6 @@
-    <div class="alert alert-danger" role="alert">
-        @foreach($errors->all() as $error)
-            <p>{{ $error }}</p>
-        @endforeach
-    </div>
+    @foreach($errors->all() as $error)
+        <p class="text-danger">{{ $error }}</p>
+    @endforeach
 
     <h2>{{Lang::get('text.sign_up')}}</h2>
 

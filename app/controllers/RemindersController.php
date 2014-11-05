@@ -1,63 +1,50 @@
 <?php
 
-class RemindersController extends \BaseController {
-	
-	protected $layout = 'layouts.main';
+class RemindersController extends Controller {
 
 	/**
-	 * Display the password reminder view.
-	 *
-	 * @return Response
-	 */
+	* Display the password reminder view.
+	*
+	* @return Response
+	*/
 	public function getRemind()
 	{
-		/*$this->layout->title = 'Password Reminder';
-	   	$this->layout->metaDescription = Lang::get('text.meta_content') . ' ';
-	   	$this->layout->metaKeywords = Lang::get('text.keywords') . ' ';
-	   	$this->layout->content = View::make('password.remind');*/
 		return View::make('password.remind');
 	}
 
 	/**
-	 * Handle a POST request to remind a user of their password.
-	 *
-	 * @return Response
-	 */
+	* Handle a POST request to remind a user of their password.
+	*
+	* @return Response
+	*/
 	public function postRemind()
 	{
 		switch ($response = Password::remind(Input::only('email')))
 		{
 			case Password::INVALID_USER:
-				return Redirect::back()->with('error', Lang::get($response));
-
+				return Redirect::back()->with('errormessage', Lang::get($response));
 			case Password::REMINDER_SENT:
-				return Redirect::back()->with('status', Lang::get($response));
+				return Redirect::back()->with('message', Lang::get($response));
 		}
 	}
 
 	/**
-	 * Display the password reset view for the given token.
-	 *
-	 * @param  string  $token
-	 * @return Response
-	 */
-	public function getReset()
+	* Display the password reset view for the given token.
+	*
+	* @param string $token
+	* @return Response
+	*/
+	public function getReset($token = null)
 	{
-		
-		//if (is_null($token)) App::abort(404);
-
-		$this->layout->title = 'Password Reset';
-	   	$this->layout->metaDescription = Lang::get('text.meta_content') . ' ';
-	   	$this->layout->metaKeywords = Lang::get('text.keywords') . ' ';
-	   	$this->layout->content = View::make('password.reset');
-		//return View::make('password.reset')->with('token', $token);
+		if (is_null($token)) App::abort(404);
+			return View::make('password.reset')->with('token', $token);
 	}
 
 	/**
-	 * Handle a POST request to reset a user's password.
-	 *
-	 * @return Response
-	 */
+	* Handle a POST request to reset a user's password.
+	*
+	* @return Response
+	*/
 	public function postReset()
 	{
 		$credentials = Input::only(
@@ -67,7 +54,6 @@ class RemindersController extends \BaseController {
 		$response = Password::reset($credentials, function($user, $password)
 		{
 			$user->password = Hash::make($password);
-
 			$user->save();
 		});
 
@@ -76,11 +62,10 @@ class RemindersController extends \BaseController {
 			case Password::INVALID_PASSWORD:
 			case Password::INVALID_TOKEN:
 			case Password::INVALID_USER:
-				return Redirect::back()->with('error', Lang::get($response));
+				return Redirect::back()->with('errormessage', Lang::get($response));
 
 			case Password::PASSWORD_RESET:
 				return Redirect::to('/');
 		}
 	}
-
 }

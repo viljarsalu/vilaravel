@@ -12,6 +12,6 @@
 		el.innerHTML = c;
 	}
 	function redirect(){
-		location.href="http://www.kodutoode.ee";
+		location.href="/";
 	}
 </script>
