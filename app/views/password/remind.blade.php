@@ -18,7 +18,7 @@
 			@endif
 		</div>
 		 
-		{{ Form::open(array('url' => 'password/remind')) }}
+		{{ Form::open(array('url'=>'password/remind', 'role'=>'form', 'id'=>'remind')) }}
 		 
 		<p>
 			{{ Form::label('email', Lang::get('text.email')) }}

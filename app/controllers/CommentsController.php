@@ -1,8 +1,6 @@
 <?php
 
-class ItemsController extends \BaseController {
-
-	protected $layout = 'layouts.main';
+class CommentsController extends \BaseController {
 
 	/**
 	 * Display a listing of the resource.
@@ -11,11 +9,7 @@ class ItemsController extends \BaseController {
 	 */
 	public function getIndex()
 	{
-		//return App::environment();
-		$this->layout->title = 'send feedback';
-	   	$this->layout->metaDescription = Lang::get('text.meta_content') . ' ';
-	   	$this->layout->metaKeywords = Lang::get('text.keywords') . ' ';
-	   	$this->layout->content = View::make('items.show');
+		return 'comments index';
 	}
 
 
@@ -24,9 +18,10 @@ class ItemsController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function create()
+	public function getCreate()
 	{
-		//
+		print_r(Auth::user());
+		return 'comments create';
 	}
 
 
@@ -35,9 +30,22 @@ class ItemsController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function store()
+	public function postAdd()
 	{
-		//
+		print_r(Input::all());
+		print_r(Auth::user());
+		/*
+		$user_id = Auth::user()->id;
+		$user = User::find($user_id);
+
+		$usr = $user->get();
+		
+		if ( Auth::user()->id ) {
+			$author = User::find(Auth::user()->id)->get();
+		} else {
+			$author = "Visitor";
+		}*/
+		return ' comments post values stored ';
 	}
 
 
@@ -47,9 +55,9 @@ class ItemsController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
+	public function getShow($id)
 	{
-		//
+		return 'comments show ' . $id;
 	}
 
 

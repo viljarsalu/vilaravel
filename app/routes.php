@@ -25,3 +25,6 @@ Route::controller('password', 'RemindersController');
 
 // email
 Route::controller('email', 'SendEmail');
+
+// comments
+Route::controller('comments', 'CommentsController');

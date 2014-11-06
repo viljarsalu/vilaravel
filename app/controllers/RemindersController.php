@@ -56,7 +56,7 @@ class RemindersController extends Controller {
 			$user->password = Hash::make($password);
 			$user->save();
 		});
-
+		
 		switch ($response)
 		{
 			case Password::INVALID_PASSWORD:

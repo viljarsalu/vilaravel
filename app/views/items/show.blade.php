@@ -62,7 +62,7 @@
                         <img data-src="holder.js/64x64" src="..." alt="user profile picture">
                     </a>
                     <div class="media-body">
-                        {{ Form::open( array( 'url' => array('comments/add','role'=>'form', 'id'=>'reset') ) ) }}
+                        {{ Form::open(array('url'=>'comments/add', 'role'=>'form', 'id'=>'add')) }}
                             {{ Form::label('add_comment', Lang::get('text.add_comment')) }}
                             {{ Form::textarea('add_comment', null, array('class'=>'form-control', 'placeholder'=>Lang::get('text.add_comment'),'id'=>'add_comment')) }}
                             {{ Form::submit(Lang::get('text.add_comment'), array('class'=>'btn btn-sm btn-primary'))}}

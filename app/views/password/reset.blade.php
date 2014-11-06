@@ -14,10 +14,11 @@
 			@endif
 		</div>
 		 
-		{{ Form::open( array( 'url' => array('password/reset','role'=>'form', 'id'=>'reset') ) ) }}
-
-		<input type="hidden" name="token" value="{{ $token }}">
-
+		{{ Form::open(array('url'=>'password/reset', 'role'=>'form', 'id'=>'reset')) }}
+		
+			
+			{{ Form::hidden('token',$token) }}
+		
 		<div class="form-group">
 		  	{{ Form::label('email', Lang::get('text.email')) }}
         	{{ Form::text('email', null, array('class'=>'form-control', 'placeholder'=>Lang::get('text.email_address'),'id'=>'email')) }}
@@ -30,7 +31,7 @@
 
 		<div class="form-group">
 		 	{{ Form::label('password_confirmation', Lang::get('text.password_confirmation')) }}
-        	{{ Form::password('password_confirmation', array('class'=>'form-control holo', 'placeholder'=>Lang::get('text.confirm_password'),'id'=>'password_confirmation')) }}
+        	{{ Form::password('password_confirmation', array('class'=>'form-control', 'placeholder'=>Lang::get('text.confirm_password'),'id'=>'password_confirmation')) }}
 		</div>
 
 
