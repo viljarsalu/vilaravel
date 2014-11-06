@@ -20,6 +20,9 @@ Route::controller('users', 'UsersController');
 // items
 Route::controller('items', 'ItemsController');
 
+// item
+Route::controller('item', 'ItemController');
+
 // password reminder
 Route::controller('password', 'RemindersController');
 
