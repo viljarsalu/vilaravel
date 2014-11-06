@@ -17,6 +17,9 @@ Route::get('/', 'HomeController@getIndex');
 // users
 Route::controller('users', 'UsersController');
 
+// items
+Route::controller('items', 'ItemsController');
+
 // password reminder
 Route::controller('password', 'RemindersController');
 

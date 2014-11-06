@@ -152,6 +152,8 @@
     {{-- HTML::script('assets/jquery/jquery.min.js') --}}
     {{-- HTML::script('assets/jquery/jquery.smoothState.js') --}}
     {{-- HTML::script('assets/bootstrap/js/bootstrap.min.js') --}}
-    {{-- HTML::script('assets/js/scripts.js') --}}
+
+    <!-- need to concat -->
+    {{ HTML::script('assets/js/comments.js') }}
   </body>
 </html>
