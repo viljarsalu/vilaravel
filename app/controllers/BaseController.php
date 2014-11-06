@@ -15,4 +15,15 @@ class BaseController extends Controller {
 		}
 	}
 
+	/**
+	 * handle missing method
+	 *
+	 * @param  int  $parameters
+	 * @return Response
+	 */
+	public function missingMethod($parameters = array())
+	{
+	    return "missing method, 404";
+	}
+
 }
