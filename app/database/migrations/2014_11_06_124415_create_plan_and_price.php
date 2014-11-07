@@ -18,9 +18,10 @@ class CreatePlanAndPrice extends Migration {
 			$table->increments('id');
 	        $table->string('title');
 	        $table->string('description');			
-	        $table->string('price');			
+	        $table->decimal('price', 10, 2);			
 	        $table->dateTime('date_start');			
 	        $table->dateTime('date_end');			
+	        $table->boolean('public');		
 	        $table->timestamps();
 		});
 	}

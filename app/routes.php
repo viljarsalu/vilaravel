@@ -31,3 +31,6 @@ Route::controller('email', 'SendEmail');
 
 // comments
 Route::controller('comments', 'CommentsController');
+
+// admin
+Route::controller('admin','AdminController');

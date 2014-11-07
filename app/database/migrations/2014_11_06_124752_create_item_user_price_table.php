@@ -12,7 +12,7 @@ class CreateItemUserPriceTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('items_users_prices', function(Blueprint $table)
+		Schema::create('item_user_price', function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->integer('item_id')->unsigned()->index();
@@ -33,7 +33,7 @@ class CreateItemUserPriceTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('items_users_prices');
+		Schema::drop('item_user_price');
 	}
 
 }

@@ -12,14 +12,14 @@ class CreateVotesUsersTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('votes_users', function(Blueprint $table)
+		Schema::create('vote_user', function(Blueprint $table)
 		{
 			$table->engine = 'InnoDB';
 	        $table->increments('id');
 	        $table->integer('user_id');
 	        $table->integer('vote_id');
 	        $table->integer('item_id');
-			$table->timestamps();
+			//$table->timestamps();
 		});
 	}
 
@@ -31,7 +31,7 @@ class CreateVotesUsersTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('votes_users');
+		Schema::drop('vote_user');
 	}
 
 }

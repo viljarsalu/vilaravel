@@ -12,14 +12,14 @@ class CreateItemLabelTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('items_labels', function(Blueprint $table)
+		Schema::create('item_label', function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->integer('item_id')->unsigned()->index();
 			$table->foreign('item_id')->references('id')->on('items')->onDelete('cascade');
 			$table->integer('label_id')->unsigned()->index();
 			$table->foreign('label_id')->references('id')->on('labels')->onDelete('cascade');
-			$table->timestamps();
+			//$table->timestamps();
 		});
 	}
 
@@ -31,7 +31,7 @@ class CreateItemLabelTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('items_labels');
+		Schema::drop('item_label');
 	}
 
 }

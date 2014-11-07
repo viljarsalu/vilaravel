@@ -17,6 +17,7 @@ class CreateLabelsTable extends Migration {
 			$table->engine = 'InnoDB';
 			$table->increments('id');
 	        $table->string('title');
+	        $table->boolean('public');
 			$table->timestamps();
 		});
 	}

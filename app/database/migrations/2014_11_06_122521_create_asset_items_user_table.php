@@ -12,7 +12,7 @@ class CreateAssetItemsUserTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('assets_items_users', function(Blueprint $table)
+		Schema::create('asset_item_user', function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->integer('asset_id')->unsigned()->index();
@@ -33,7 +33,7 @@ class CreateAssetItemsUserTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('assets_items_users');
+		Schema::drop('asset_item_user');
 	}
 
 }

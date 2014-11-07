@@ -27,10 +27,13 @@ class ItemController extends \BaseController {
 			return Redirect::to('/')->with('errormessage', Lang::get('text.please_log_in') );
 		}
 
-		$this->layout->title = 'Add Item';
-	   	$this->layout->metaDescription = Lang::get('text.meta_content') . ' ';
-	   	$this->layout->metaKeywords = Lang::get('text.keywords') . ' ';
-	   	$this->layout->content = View::make('item.create');
+		$label 			= Label::where('public','=',true)->get();// define it into model
+		$plansPrices 	= Planprice::where('public','=',true)->get();// define it into model
+
+		$this->layout->title 			= 'Add Item';
+	   	$this->layout->metaDescription 	= Lang::get('text.meta_content') . ' ';
+	   	$this->layout->metaKeywords 	= Lang::get('text.keywords') . ' ';
+	   	$this->layout->content 			= View::make('item.create', array( 'label' => $label, 'plansPrices' => $plansPrices ));
 	}
 
 	/**
@@ -42,18 +45,18 @@ class ItemController extends \BaseController {
 	public function postCreate()
 	{
 
-		if ( Auth::guest() ) {
+		if ( Auth::guest() ) 
+		{
 			return Redirect::to('/')->with('errormessage', Lang::get('text.please_log_in') );
 		}
-
-		return Input::get('public');
 
 		$user_id = Auth::user()->id;
 		$user = User::find($user_id);
 
 		$validator = Validator::make(Input::all(), Item::$rules);
 
- 		if ($validator->passes()) {
+ 		if ($validator->passes()) 
+ 		{
 
  			$item = new Item;
  			$item->paid = false;//vaja labimotelda
@@ -62,20 +65,35 @@ class ItemController extends \BaseController {
  			$saveItem = $item->user()->associate($user)->save();
 
  			// othe fiels
- 			$label = Input::get('label');
- 			$address = Input::get('address');
+ 			$title 			= Input::get('title');
+ 			$description 	= Input::get('description');
+ 			$labelInput		= Input::get('label');
+ 			$address 		= Input::get('address');
 
  			if( $saveItem ) 
  			{
- 				return "item has saved save next data";
+ 				// Save content;
+ 				$content 				= new Content;
+ 				$content->title 		= $title;
+ 				$content->description 	= $description;
+ 				$content->item()->associate($item)->save();
+
+ 				// Attach Label to Item
+ 				$label = Label::find($labelInput);
+ 				$item->labels()->attach($label->id);
+
+ 				// here comes plan and price data and saveing
+ 				
+ 				
+ 				return Redirect::to('/item/create')->with('message', Lang::get('text.saved') );
  			} else {
- 				return Redirect::to('users/register')->with('errormessage', 'The following errors occurred')->withErrors($validator)->withInput();
+ 				return Redirect::to('/item/create')->with('errormessage', Lang::get('text.something_went_wrong_saving_data_to_table'));
  			}
  			
 		    return Redirect::to('/')->with('message', Lang::get('text.saved_successfully') );
 		    
 		} else {
-		    return Redirect::to('item/create')->with('errormessage', 'The following errors occurred')->withErrors($validator)->withInput();
+		    return Redirect::to('/item/create')->with('errormessage', Lang::get('text.the_following_errors_occurred') )->withErrors($validator)->withInput();
 		}
 
 	}

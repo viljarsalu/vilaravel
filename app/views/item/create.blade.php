@@ -8,36 +8,31 @@
     <fieldset>
         <legend>Choose Type and Label</legend>
         <label for="type">Type</label>
+
         <select name="type" id="type">
-            <option value="type_1">Type 1</option>
-            <option value="type_2">Type 2</option>
-            <option value="type_3">Type 3</option>
+        @for ($i = 0; $i < count(Config::get('pagesettings.types')); $i++ )
+            <option value="{{ Config::get('pagesettings.types')[$i] }}">{{ Lang::get('text.' . Config::get('pagesettings.types')[$i]) }}</option>
+        @endfor
         </select>
 
         <br>
         <label for="label">Label</label>
         <select name="label" id="label">
-            <option value="label_1">Label 1</option>
-            <option value="label_2">Label 2</option>
-            <option value=".abel_3">Label 3</option>
+        @foreach( $label as $key=>$value )
+            <option value="{{ $value->id }}">{{ $value->title }}</option>
+        @endforeach
         </select>
     </fieldset>
 
     <fieldset>
         <legend>Plan and Price</legend>
         <ul class="list-inline">
-            <li>
-                {{ Form::label('plan1', 'plan a') }}
-                {{ Form::radio('plan_and_price', 'plan1'); }}
-            </li>
-            <li>
-                {{ Form::label('plan2', 'plan b') }}
-                {{ Form::radio('plan_and_price', 'plan2'); }}
-            </li>
-            <li>
-                {{ Form::label('plan3', 'plan c') }}
-                {{ Form::radio('plan_and_price', 'plan3'); }}
-            </li>
+            @foreach( $plansPrices as $key=>$value )
+                <li>
+                    {{ Form::label('plan'.$value->id, $value->title) }}
+                    {{ Form::radio('plan_and_price', $value->id); }}
+                </li>
+            @endforeach
         </ul>
     </fieldset>
 
@@ -51,8 +46,8 @@
         <legend>Item Content</legend>
         {{ Form::label('title', 'Title') }}
         {{ Form::text('title', null, array('class'=>'form-control', 'placeholder'=>Lang::get('text.title'),'id'=>'title')) }}
-        {{ Form::label('content', 'Content') }}
-        {{ Form::textarea('content', null, array('class'=>'form-control', 'placeholder'=>Lang::get('text.content'),'id'=>'content')) }}
+        {{ Form::label('description', 'Description') }}
+        {{ Form::textarea('description', null, array('class'=>'form-control', 'placeholder'=>Lang::get('text.description'),'id'=>'description')) }}
     </fieldset>
 
     {{ Form::submit(Lang::get('text.send_reminder'), array('class'=>'btn btn-large btn-primary')) }}
