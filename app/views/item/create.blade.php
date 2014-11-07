@@ -1,4 +1,27 @@
-{{ Form::open(array('url'=>'items/create', 'role'=>'form', 'id'=>'remind')) }}
+@foreach($errors->all() as $error)
+<p class="text-danger">{{ $error }}</p>
+@endforeach
+
+{{ Form::open(array('url'=>'item/create', 'role'=>'form', 'id'=>'remind')) }}
+    <label for="public">Make public</label>
+    <input type="checkbox" name="public" id="public" />
+    <fieldset>
+        <legend>Choose Type and Label</legend>
+        <label for="type">Type</label>
+        <select name="type" id="type">
+            <option value="type_1">Type 1</option>
+            <option value="type_2">Type 2</option>
+            <option value="type_3">Type 3</option>
+        </select>
+
+        <br>
+        <label for="label">Label</label>
+        <select name="label" id="label">
+            <option value="label_1">Label 1</option>
+            <option value="label_2">Label 2</option>
+            <option value=".abel_3">Label 3</option>
+        </select>
+    </fieldset>
 
     <fieldset>
         <legend>Plan and Price</legend>

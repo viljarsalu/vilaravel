@@ -23,7 +23,10 @@ class ItemController extends \BaseController {
 	 */
 	public function getCreate()
 	{
-		//return "item create";
+		if ( Auth::guest() ) {
+			return Redirect::to('/')->with('errormessage', Lang::get('text.please_log_in') );
+		}
+
 		$this->layout->title = 'Add Item';
 	   	$this->layout->metaDescription = Lang::get('text.meta_content') . ' ';
 	   	$this->layout->metaKeywords = Lang::get('text.keywords') . ' ';
@@ -36,9 +39,45 @@ class ItemController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function postAdd()
+	public function postCreate()
 	{
-		return "item add";
+
+		if ( Auth::guest() ) {
+			return Redirect::to('/')->with('errormessage', Lang::get('text.please_log_in') );
+		}
+
+		return Input::get('public');
+
+		$user_id = Auth::user()->id;
+		$user = User::find($user_id);
+
+		$validator = Validator::make(Input::all(), Item::$rules);
+
+ 		if ($validator->passes()) {
+
+ 			$item = new Item;
+ 			$item->paid = false;//vaja labimotelda
+ 			$item->public = ( Input::get('public') == 'on' ? true : false );
+ 			$item->type = Input::get('type');
+ 			$saveItem = $item->user()->associate($user)->save();
+
+ 			// othe fiels
+ 			$label = Input::get('label');
+ 			$address = Input::get('address');
+
+ 			if( $saveItem ) 
+ 			{
+ 				return "item has saved save next data";
+ 			} else {
+ 				return Redirect::to('users/register')->with('errormessage', 'The following errors occurred')->withErrors($validator)->withInput();
+ 			}
+ 			
+		    return Redirect::to('/')->with('message', Lang::get('text.saved_successfully') );
+		    
+		} else {
+		    return Redirect::to('item/create')->with('errormessage', 'The following errors occurred')->withErrors($validator)->withInput();
+		}
+
 	}
 
 	/**
