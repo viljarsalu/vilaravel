@@ -32,8 +32,26 @@ class CommentsController extends \BaseController {
 	 */
 	public function postAdd()
 	{
-		print_r(Input::all());
-		print_r(Auth::user());
+		/*print_r(Input::all());
+		print_r(Auth::user());*/
+
+		$user_id 	= Auth::user()->id;
+		$user 		= User::find($user_id);
+
+		$validator 	= Validator::make(Input::all(), Comment::$rules);
+		$item_id 	= Input::get('item_id');
+		$item 		= Item::find($item_id);
+
+		//associate and save comment
+		$comment 			= new Comment;
+		$comment->title 	= Input::get('comment_title');
+		$comment->comment 	= Input::get('comment');
+		$comment->author 	= $user->first_name . " " . $user->last_name;
+		$saved 				= $comment->item()->associate($item)->save();
+		
+		if( $saved ){
+			return Redirect::back()->with('message', Lang::get('text.comment_saved'));
+		}
 		/*
 		$user_id = Auth::user()->id;
 		$user = User::find($user_id);

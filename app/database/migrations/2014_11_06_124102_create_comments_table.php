@@ -20,6 +20,7 @@ class CreateCommentsTable extends Migration {
 	        $table->foreign('item_id')->references('id')->on('items');
 	        $table->string('title');
 	        $table->string('comment');			
+	        $table->string('author');		
 	        $table->timestamps();
 		});
 	}

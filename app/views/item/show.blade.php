@@ -1,4 +1,5 @@
-<div class="row">
+<?php print_r($posts);?>
+<div class="row  hide">
   <div class="col-sm-6 col-md-4">
 
     <div class="thumbnail">

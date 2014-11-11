@@ -11,21 +11,23 @@ class ItemsController extends \BaseController {
 	 */
 	public function getIndex()
 	{
-		//return App::environment();
-		$pageData = [];
-		$item = Item::where('public','=',1)->get();
-		foreach ($item as $key => $value) {
-			echo $value->plansandprices;
-			array_push($pageData, $value);
-		}
-		echo '<hr />' . Item::find(1)->labels;
-		echo '<hr />' . Item::find(7)->plansandprices;
-		return 'end';
+		//$items = Item::with('content','labels')->get();
+		//$items = Item::with('content','labels')->where('public','=',1)->get();
+		/*$type = 'type';
+		$items = Item::with('content','labels')->where('type','LIKE','%'.$type.'%')->get();
+		return $items;*/
+
+		/*$labels = Label::with('items')->where('public','=',1)->get();
+		return $labels;*/
+		//return 'end';
+
+		$items = Item::with('content','comments')->where('public','=',1)->get();
+		//return $items;
 
 		$this->layout->title = 'Items';
 	   	$this->layout->metaDescription = Lang::get('text.meta_content') . ' ';
 	   	$this->layout->metaKeywords = Lang::get('text.keywords') . ' ';
-	   	$this->layout->content = View::make('items.show');
+	   	$this->layout->content = View::make('items.show', array('items' => $items) );
 	}
 
 

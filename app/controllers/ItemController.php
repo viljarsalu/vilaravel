@@ -83,11 +83,11 @@ class ItemController extends \BaseController {
  				$label = Label::find($labelInput);
  				$item->labels()->attach($label->id);
 
- 				// Attach plansAndPrice to Item
+ 				// Attach Price to Item
  				$plansPrices = Price::find($price_id);
- 				$item->plansandprices()->attach($plansPrices->id);
- 				// Attach plansAndPrice to User
- 				$user->plansandprices()->attach($plansPrices->id);
+ 				$item->prices()->attach($plansPrices->id);
+ 				// Attach Price to User
+ 				$user->prices()->attach($plansPrices->id);
  				
  				return Redirect::to('/item/create')->with('message', Lang::get('text.saved') );
  			} else {

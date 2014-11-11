@@ -8,12 +8,10 @@ class Item extends \Eloquent {
 	 * @var string
 	 */
 	protected $table = 'items';
-	protected $fillable = ['type','label','plan_and_price'];
+	protected $fillable = ['type','public'];
 
 	public static $rules = array(
-		'type' 				=> 'required',
-		'label' 			=> 'required',
-		'plan_and_price' 	=> 'required'
+		'type' 				=> 'required'
 	);
 
 	public function content() {
@@ -30,8 +28,12 @@ class Item extends \Eloquent {
 		return $this->belongsToMany('Label');
 	}
 
-	public function plansandprices()
+	public function prices()
 	{
 		return $this->belongsToMany('Price');
+	}
+
+	public function comments() {
+		return $this->hasMany('Comment');
 	}
 }

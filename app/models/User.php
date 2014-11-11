@@ -40,7 +40,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 		return $this->hasOne('Userinfo');
 	}
 
-	public function plansandprices()
+	public function prices()
 	{
 		return $this->belongsToMany('Price');
 	}

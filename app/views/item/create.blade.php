@@ -32,7 +32,7 @@
                     <div style="border:1px solid #c8c8c8; padding:10px;">
                         <h3>{{ $value->title }}</h3>
                         <p>{{ $value->description }}</p>
-                        {{ Form::label('plan'.$value->id, $value->title) }}
+                        {{ Form::label('plan_and_price', $value->title) }}
                         {{ Form::radio('plan_and_price', $value->id); }}
                     </div>
                 </li>
