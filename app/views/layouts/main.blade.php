@@ -63,7 +63,10 @@
             <ul class="nav navbar-nav">
               <li><a href="/">link</a></li>
               <li><a href="/email/feedback">Send feedback</a></li>
+              <li><a href="/items">Show all public Items</a></li>
               @if( Auth::check() )<li><a href="/item/create"><span class="glyphicon glyphicon-plus"></span> Add new item</a></li>@endif
+              @if( Auth::check() )<li><a href="/admin/createlabel"><span class="glyphicon glyphicon-plus"></span> add labels</a></li>@endif
+              @if( Auth::check() )<li><a href="/item/createplanandprice"><span class="glyphicon glyphicon-plus"></span> add plan and price</a></li>@endif
             </ul>
 
             @if( Auth::guest() )
