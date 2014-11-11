@@ -79,7 +79,7 @@ class AdminController extends \BaseController {
 	 */
 	public function postCreateplanandprice()
 	{
-		$planandprice				= new Planprice;
+		$planandprice				= new Price;
  		$planandprice->public 		= ( Input::get('public') == "on" ? true : false );
  		$planandprice->title 		= Input::get('title');
  		$planandprice->description 	= Input::get('description');

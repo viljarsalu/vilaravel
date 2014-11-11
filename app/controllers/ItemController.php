@@ -28,7 +28,7 @@ class ItemController extends \BaseController {
 		}
 
 		$label 			= Label::where('public','=',true)->get();// define it into model
-		$plansPrices 	= Planprice::where('public','=',true)->get();// define it into model
+		$plansPrices 	= Price::where('public','=',true)->get();// define it into model
 
 		$this->layout->title 			= 'Add Item';
 	   	$this->layout->metaDescription 	= Lang::get('text.meta_content') . ' ';
@@ -58,17 +58,18 @@ class ItemController extends \BaseController {
  		if ($validator->passes()) 
  		{
 
- 			$item = new Item;
- 			$item->paid = false;//vaja labimotelda
- 			$item->public = ( Input::get('public') == 'on' ? true : false );
- 			$item->type = Input::get('type');
- 			$saveItem = $item->user()->associate($user)->save();
+ 			$item 			= new Item;
+ 			$item->paid 	= false;//vaja labimotelda
+ 			$item->public 	= ( Input::get('public') == 'on' ? true : false );
+ 			$item->type 	= Input::get('type');
+ 			$saveItem 		= $item->user()->associate($user)->save();
 
  			// othe fiels
- 			$title 			= Input::get('title');
- 			$description 	= Input::get('description');
- 			$labelInput		= Input::get('label');
- 			$address 		= Input::get('address');
+ 			$title 				= Input::get('title');
+ 			$description 		= Input::get('description');
+ 			$labelInput			= Input::get('label');
+ 			$price_id 			= Input::get('plan_and_price');
+ 			$address 			= Input::get('address');
 
  			if( $saveItem ) 
  			{
@@ -82,8 +83,11 @@ class ItemController extends \BaseController {
  				$label = Label::find($labelInput);
  				$item->labels()->attach($label->id);
 
- 				// here comes plan and price data and saveing
- 				
+ 				// Attach plansAndPrice to Item
+ 				$plansPrices = Price::find($price_id);
+ 				$item->plansandprices()->attach($plansPrices->id);
+ 				// Attach plansAndPrice to User
+ 				$user->plansandprices()->attach($plansPrices->id);
  				
  				return Redirect::to('/item/create')->with('message', Lang::get('text.saved') );
  			} else {

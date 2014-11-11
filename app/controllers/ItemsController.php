@@ -12,6 +12,16 @@ class ItemsController extends \BaseController {
 	public function getIndex()
 	{
 		//return App::environment();
+		$pageData = [];
+		$item = Item::where('public','=',1)->get();
+		foreach ($item as $key => $value) {
+			echo $value->plansandprices;
+			array_push($pageData, $value);
+		}
+		echo '<hr />' . Item::find(1)->labels;
+		echo '<hr />' . Item::find(7)->plansandprices;
+		return 'end';
+
 		$this->layout->title = 'Items';
 	   	$this->layout->metaDescription = Lang::get('text.meta_content') . ' ';
 	   	$this->layout->metaKeywords = Lang::get('text.keywords') . ' ';

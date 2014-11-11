@@ -1,7 +1,7 @@
 <?php
 
-class Planprice extends \Eloquent {
-	protected $table = 'plans_and_prices';
+class Price extends \Eloquent {
+	protected $table = 'prices';
 	protected $fillable = ['title','description','price','date_start','date_end','public'];
 
 	public static $rules = array(
@@ -10,8 +10,13 @@ class Planprice extends \Eloquent {
 		'price' 		=> 'required'
 	);
 
-	public function item()
+	public function items()
 	{
-		return $this->belongsTo('Item');
+		return $this->belongsToMany('Item');
+	}
+
+	public function users()
+	{
+		return $this->belongsToMany('User');
 	}
 }

@@ -29,4 +29,9 @@ class Item extends \Eloquent {
 	{
 		return $this->belongsToMany('Label');
 	}
+
+	public function plansandprices()
+	{
+		return $this->belongsToMany('Price');
+	}
 }

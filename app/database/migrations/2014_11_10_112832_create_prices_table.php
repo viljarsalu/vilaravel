@@ -1,9 +1,9 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
-class CreatePlanAndPrice extends Migration {
+class CreatePricesTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,7 +12,7 @@ class CreatePlanAndPrice extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('plans_and_prices', function(Blueprint $table)
+		Schema::create('prices', function(Blueprint $table)
 		{
 			$table->engine = 'InnoDB';
 			$table->increments('id');
@@ -26,7 +26,6 @@ class CreatePlanAndPrice extends Migration {
 		});
 	}
 
-
 	/**
 	 * Reverse the migrations.
 	 *
@@ -34,7 +33,7 @@ class CreatePlanAndPrice extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('plans_and_prices');
+		Schema::drop('prices');
 	}
 
 }

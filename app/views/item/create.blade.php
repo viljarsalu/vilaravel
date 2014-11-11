@@ -29,8 +29,12 @@
         <ul class="list-inline">
             @foreach( $plansPrices as $key=>$value )
                 <li>
-                    {{ Form::label('plan'.$value->id, $value->title) }}
-                    {{ Form::radio('plan_and_price', $value->id); }}
+                    <div style="border:1px solid #c8c8c8; padding:10px;">
+                        <h3>{{ $value->title }}</h3>
+                        <p>{{ $value->description }}</p>
+                        {{ Form::label('plan'.$value->id, $value->title) }}
+                        {{ Form::radio('plan_and_price', $value->id); }}
+                    </div>
                 </li>
             @endforeach
         </ul>
