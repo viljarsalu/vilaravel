@@ -21,13 +21,13 @@ class ItemsController extends \BaseController {
 		return $labels;*/
 		//return 'end';
 
-		$items = Item::with('content','comments')->where('public','=',1)->get();
+		$items = Item::with('content','comments','votes','votedusers','labels')->where('public','=',1)->get();
 		//return $items;
 
-		$this->layout->title = 'Items';
-	   	$this->layout->metaDescription = Lang::get('text.meta_content') . ' ';
-	   	$this->layout->metaKeywords = Lang::get('text.keywords') . ' ';
-	   	$this->layout->content = View::make('items.show', array('items' => $items) );
+		$this->layout->title 			= 'Items';
+	   	$this->layout->metaDescription 	= Lang::get('text.meta_content') . ' ';
+	   	$this->layout->metaKeywords 	= Lang::get('text.keywords') . ' ';
+	   	$this->layout->content 			= View::make('items.show', array('items' => $items) );
 	}
 
 

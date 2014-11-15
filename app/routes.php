@@ -34,3 +34,6 @@ Route::controller('comments', 'CommentsController');
 
 // admin
 Route::controller('admin','AdminController');
+
+// votes
+Route::controller('vote','VotesController');

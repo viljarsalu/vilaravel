@@ -11,7 +11,7 @@ class Item extends \Eloquent {
 	protected $fillable = ['type','public'];
 
 	public static $rules = array(
-		'type' 				=> 'required'
+		'type' 	=> 'required'
 	);
 
 	public function content() {
@@ -35,5 +35,13 @@ class Item extends \Eloquent {
 
 	public function comments() {
 		return $this->hasMany('Comment');
+	}
+
+	public function votes() {
+		return $this->hasMany('Vote');
+	}
+	
+	public function votedusers() {
+		return $this->hasMany('Voteduser');
 	}
 }

@@ -109,9 +109,16 @@ class ItemController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
+	public function getShow($id)
 	{
-		return "item show" . $id;
+		//return "item show" . $id;
+		$items = Item::with('content','comments','votes','votedusers')->where('public','=',1)->where('id','=',$id)->get();
+		//return $items;
+
+		$this->layout->title 			= 'Item';
+	   	$this->layout->metaDescription 	= Lang::get('text.meta_content') . ' ';
+	   	$this->layout->metaKeywords 	= Lang::get('text.keywords') . ' ';
+	   	$this->layout->content 			= View::make('item.show', array('items' => $items) );
 	}
 
 	/**

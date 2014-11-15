@@ -1,7 +1,7 @@
 <?php
 
-class Vote extends \Eloquent {
-	protected $table 	= 'votes';
+class Voteduser extends \Eloquent {
+	protected $table 	= 'voted_user';
 	protected $fillable = [];
 
 	/*public static $rules = array(
