@@ -26,6 +26,7 @@
 
             <!-- votes -->
             <div class="votes">
+            
             @if ( count($value->votedusers) == 0 && Auth::check() )
                 
                 {{ Form::open(array('url'=>'vote/like', 'class'=>'pull-left', 'role'=>'form', 'id'=>'like')) }}

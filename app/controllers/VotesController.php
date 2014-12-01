@@ -86,28 +86,55 @@ class VotesController extends \BaseController {
 	public function postDislike()
 	{
 		$item = Item::find( Input::get('item_id') );
-
-		if (count($item->votes) > 0 )
+		//return $item->votedusers;
+		 
+		if ( count($item->votes) > 0 )
 		{
 			$voteCount 	= $item->votes[0]->dislike;
 			$voteId 	= $item->votes[0]->id;
 			$vote 		= Vote::find($voteId);
 			$vote->increment('dislike',1);
-			
+			 
 			if ( $vote->save() )
 			{
+				$voteduser 			= new Voteduser;
+				$voteduser->user_id = Auth::user()->id;
+				$savedUser 			= $voteduser->item()->associate($item)->save();
+				
+
+				if( $savedUser )
+				{
+					return Redirect::back()->with('message', Lang::get('text.vote_saved'));
+				} else {
+					return Redirect::back()->with('errormessage', Lang::get('text.vote_not_saved'));
+				}
+				
 				return Redirect::back()->with('message', Lang::get('text.vote_saved'));
+
 			} else {
 				return Redirect::back()->with('errormessage', Lang::get('text.vote_not_saved'));
 			}
 		} else {
-			$vote 		= new Vote;
-			$vote->dislike = 1;
-			$saved 		= $vote->item()->associate($item)->save();
+			
+			$vote 			= new Vote;
+			$vote->dislike 	= 1;
+			$saved 			= $vote->item()->associate($item)->save();
 
 			if ( $saved )
 			{
+				$voteduser 			= new Voteduser;
+				$voteduser->user_id = Auth::user()->id;
+				$savedUser 			= $voteduser->item()->associate($item)->save();
+				
+				if( $savedUser )
+				{
+					return Redirect::back()->with('message', Lang::get('text.vote_saved'));
+				} else {
+					return Redirect::back()->with('errormessage', Lang::get('text.vote_not_saved'));
+				}
+
 				return Redirect::back()->with('message', Lang::get('text.vote_saved'));
+
 			} else {
 				return Redirect::back()->with('errormessage', Lang::get('text.vote_not_saved'));
 			}
