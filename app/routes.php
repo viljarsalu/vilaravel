@@ -37,3 +37,6 @@ Route::controller('admin','AdminController');
 
 // votes
 Route::controller('vote','VotesController');
+
+// address
+Route::controller('address','AddressController');

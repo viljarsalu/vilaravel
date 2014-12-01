@@ -29,11 +29,13 @@ class ItemController extends \BaseController {
 
 		$label 			= Label::where('public','=',true)->get();// define it into model
 		$plansPrices 	= Price::where('public','=',true)->get();// define it into model
+		$existing_address = User::find(Auth::user()->id);
+		$existing_address = $existing_address->addresses;
 
 		$this->layout->title 			= 'Add Item';
 	   	$this->layout->metaDescription 	= Lang::get('text.meta_content') . ' ';
 	   	$this->layout->metaKeywords 	= Lang::get('text.keywords') . ' ';
-	   	$this->layout->content 			= View::make('item.create', array( 'label' => $label, 'plansPrices' => $plansPrices ));
+	   	$this->layout->content 			= View::make('item.create', array( 'label' => $label, 'plansPrices' => $plansPrices, 'existing_address' => $existing_address ));
 	}
 
 	/**
@@ -88,6 +90,32 @@ class ItemController extends \BaseController {
  				$item->prices()->attach($plansPrices->id);
  				// Attach Price to User
  				$user->prices()->attach($plansPrices->id);
+
+ 				$existing_address = Input::get('existing_address_id');
+ 				if ( $existing_address ) {
+ 					//return "existing_address " . Input::get('existing_address_id');
+ 					// Attach address to item
+	 				$item->addresses()->attach(Input::get('existing_address_id'));
+ 				} else {
+ 					//return "new address";
+ 					// address
+	 				// add new address into base
+	 				$address 					= new Address;
+	 				$address->street_address 	= Input::get('route') . " " . Input::get('street_number') . ", " . Input::get('administrative_area_level_1') . ", " . Input::get('country');
+	 				$address->city 				= Input::get('locality');
+	 				$address->state 			= Input::get('administrative_area_level_1');
+	 				$address->country 			= Input::get('country');
+	 				$address->zip 				= Input::get('postal_code');
+	 				$address->lat 				= Input::get('lat');
+	 				$address->lng 				= Input::get('lng');
+	 				$address->save();
+	 				
+	 				$userAddress = Address::find($address->id);
+	 				// Attach address to user
+	 				$user->addresses()->attach($address->id);
+	 				// Attach address to item
+	 				$item->addresses()->attach($address->id);
+ 				}
  				
  				return Redirect::to('/item/create')->with('message', Lang::get('text.saved') );
  			} else {
@@ -112,7 +140,7 @@ class ItemController extends \BaseController {
 	public function getShow($id)
 	{
 		//return "item show" . $id;
-		$items = Item::with('content','comments','votes','votedusers')->where('public','=',1)->where('id','=',$id)->get();
+		$items = Item::with('content','comments','votes','votedusers','addresses','prices')->where('public','=',1)->where('id','=',$id)->get();
 		//return $items;
 
 		$this->layout->title 			= 'Item';

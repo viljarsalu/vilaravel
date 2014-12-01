@@ -25,21 +25,36 @@ class UsersController extends BaseController {
  		if ($validator->passes()) {
 
  			$user = new User;
-			$user->first_name = Input::get('first_name');
-			$user->last_name = Input::get('last_name');
-			$user->email = Input::get('email');
-			$user->password = Hash::make(Input::get('password'));
+			$user->first_name	= Input::get('first_name');
+			$user->last_name 	= Input::get('last_name');
+			$user->email 		= Input::get('email');
+			$user->password 	= Hash::make(Input::get('password'));
 			//$user->save(); 
 
  			if( $user->save() ) 
  			{
  				//users additional info
-			    $userinfo = new Userinfo;
-			    $userinfo->sex = Input::get('sex');
-			    $userinfo->birth_day = Input::get('birth_day');
-	            $userinfo->birth_month = Input::get('birth_month');
-	            $userinfo->birth_year = Input::get('birth_year');
+			    $userinfo 				= new Userinfo;
+			    $userinfo->sex 			= Input::get('sex');
+			    $userinfo->birth_time 	= Input::get('birth_time');
 	            $userinfo->user()->associate($user)->save();
+
+	            // add address
+	            $address 					= new Address;
+ 				$address->street_address 	= Input::get('route') . " " . Input::get('street_number') . ", " . Input::get('administrative_area_level_1') . ", " . Input::get('country');
+ 				$address->city 				= Input::get('locality');
+ 				$address->state 			= Input::get('administrative_area_level_1');
+ 				$address->country 			= Input::get('country');
+ 				$address->zip 				= Input::get('postal_code');
+ 				$address->lat 				= Input::get('lat');
+ 				$address->lng 				= Input::get('lng');
+ 				$address->save();
+ 				
+ 				$userAddress = Address::find($address->id);
+ 				// Attach address to user
+ 				$existingUser = User::find($user->id);
+ 				$existingUser->addresses()->attach($address->id);
+
  			} else {
  				return Redirect::to('users/register')->with('errormessage', 'The following errors occurred')->withErrors($validator)->withInput();
  			}
@@ -77,23 +92,23 @@ class UsersController extends BaseController {
 			return Redirect::to('/')->with('errormessage', Lang::get('text.please_log_in') );
 		}
 
-		$user_id = Auth::user()->id;
-		$user = User::find($user_id);
+		$user_id 	= Auth::user()->id;
+		$user 		= User::find($user_id);
 
 		$usr = $user->get();
-		$this->layout->title = 'tere tulemast!';
-	   	$this->layout->metaDescription = Lang::get('text.meta_content') . ' ';
-	   	$this->layout->metaKeywords = Lang::get('text.keywords') . ' ';
-	   	$this->layout->content = View::make('users.dashboard', array('user'=>$usr,'userinfo'=>$user->userinfo));
+		$this->layout->title 			= 'tere tulemast!';
+	   	$this->layout->metaDescription 	= Lang::get('text.meta_content') . ' ';
+	   	$this->layout->metaKeywords 	= Lang::get('text.keywords') . ' ';
+	   	$this->layout->content 			= View::make('users.dashboard', array('user'=>$usr,'userinfo'=>$user->userinfo));
 	}
 
 	public function getList() {
-		$userid = Auth::user()->id;
-		$username = Auth::user()->first_name;
-    	$this->layout->title = '';
-	   	$this->layout->metaDescription = Lang::get('text.meta_content');
-	   	$this->layout->metaKeywords = Lang::get('text.keywords');
-    	$this->layout->content = View::make('users.dashboard', array('userid'=>$userid, 'username'=>$username));
+		$userid 	= Auth::user()->id;
+		$username 	= Auth::user()->first_name;
+    	$this->layout->title 			= '';
+	   	$this->layout->metaDescription 	= Lang::get('text.meta_content');
+	   	$this->layout->metaKeywords 	= Lang::get('text.keywords');
+    	$this->layout->content 			= View::make('users.dashboard', array('userid'=>$userid, 'username'=>$username));
 	}
 
 	public function getLogout() {
@@ -108,13 +123,13 @@ class UsersController extends BaseController {
 
 	public function getUpdate() {
 		if(Auth::check()) {
-			$userid = Auth::user()->id;
-			$userdata = User::where('id', $userid)->get();
+			$userid 	= Auth::user()->id;
+			$userdata 	= User::where('id', $userid)->get();
 
-		    $this->layout->title = '';
-	   		$this->layout->metaDescription = Lang::get('text.meta_content');
-	   		$this->layout->metaKeywords = Lang::get('text.keywords');
-		    $this->layout->content = View::make('users.update', array('post' => $userdata));
+		    $this->layout->title 			= '';
+	   		$this->layout->metaDescription 	= Lang::get('text.meta_content');
+	   		$this->layout->metaKeywords 	= Lang::get('text.keywords');
+		    $this->layout->content 			= View::make('users.update', array('post' => $userdata));
 		} else {
 			return Redirect::to('/');//->with('message', 'Please, login or sign up!');
 		}
@@ -130,18 +145,8 @@ class UsersController extends BaseController {
 		    'first_name' 	=> Input::get('firstname'),
 		    'last_name' 	=> Input::get('lastname'),
 		    'email' 		=> Input::get('email'),
-		    'phone_number' 	=> Input::get('phone_number'),
-		    'birth_day' 	=> Input::get('birth_day'),
-	        'birth_month' 	=> Input::get('birth_month'),
-	        'birth_year' 	=> Input::get('birth_year'),
-		    'sex' 			=> Input::get('sex'),
-		    'vendor' 		=> Input::get('vendor'),
-		    'country' 		=> Input::get('country'),
-		    'county' 		=> Input::get('county'),
-		    'city' 			=> Input::get('city'),
-		    'street' 		=> Input::get('street'),
-		    'postindex' 	=> Input::get('postindex'),
-		    //,'updated_at' => new DateTime
+		    'birth_time' 	=> Input::get('birth_day'),
+		    'sex' 			=> Input::get('sex')
 		);
 		$user = Auth::user();
 	   	if( !empty($user) ) {

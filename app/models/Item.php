@@ -44,4 +44,16 @@ class Item extends \Eloquent {
 	public function votedusers() {
 		return $this->hasMany('Voteduser');
 	}
+
+	public function addresses()
+	{
+		return $this->belongsToMany('Address');
+	}
+
+	
+	public function assets()
+	{
+		return $this->belongsToMany('Asset');
+	}
+
 }

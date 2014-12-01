@@ -44,7 +44,10 @@
 
     <!-- birth data -->
     <div class="form-group">
-        {{ Form::label('birth_month', Lang::get('text.birth_month')) }}
+        {{ Form::label('birth_time', Lang::get('text.birth_time') ) }}
+        {{ Form::text('birth_time', null, array('class'=>'form-control', 'placeholder'=>Lang::get('text.birth_time'),'id'=>'birth_time')) }}
+
+       <!--  {{ Form::label('birth_month', Lang::get('text.birth_month')) }}
         <select id="birth_month" name="birth_month">
         @for ($i = 0; $i < count(Config::get('pagesettings.months')); $i++ )
             <option value="{{ Config::get('pagesettings.months')[$i] }}">{{ Lang::get('text.' . Config::get('pagesettings.months')[$i]) }}</option>
@@ -65,33 +68,12 @@
             @for ($i = 2014; $i > 1904; $i--)
             <option label="{{$i}}" value="{{$i}}">{{$i}}</option>
             @endfor
-         </select>
+         </select> -->
     </div>
 
     <hr style="border:1px solid red;" />
-
-    <!-- address fill automaticaly. use google geolocation -->
-    <div class="form-group">
-        {{ Form::label('street', Lang::get('text.street')) }}
-        {{ Form::text('street', null, array('class'=>'form-control', 'placeholder'=>Lang::get('text.street'),'id'=>'street')) }}
-    </div>
-    <div class="form-group">
-        {{ Form::label('city', Lang::get('text.city')) }}
-        {{ Form::text('city', null, array('class'=>'form-control', 'placeholder'=>Lang::get('text.city'),'id'=>'city')) }}
-    </div>
-    <div class="form-group">
-        {{ Form::label('county', Lang::get('text.county')) }}
-        {{ Form::text('county', null, array('class'=>'form-control', 'placeholder'=>Lang::get('text.county'),'id'=>'county')) }}
-    </div>
-
-    <div class="form-group">
-        {{ Form::label('country', Lang::get('text.country')) }}
-        {{ Form::text('country', null, array('class'=>'form-control', 'placeholder'=>Lang::get('text.country'),'id'=>'country')) }}
-    </div>
-    <div class="form-group">
-        {{ Form::label('postindex', Lang::get('text.postindex')) }}
-        {{ Form::text('postindex', null, array('class'=>'form-control', 'placeholder'=>Lang::get('text.postindex'),'id'=>'postindex')) }}
-    </div>
+    
+     @include('address.create')
 
     {{ Form::submit(Lang::get('text.sign_up'), array('class'=>'btn btn-large btn-primary'))}}
     

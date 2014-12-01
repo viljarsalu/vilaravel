@@ -13,11 +13,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 		'email' 		=> 'required|email|unique:users',
 		'password' 		=> 'required|alpha_num|between:6,12',
 		'first_name' 	=> 'required|alpha|min:2',
-		'last_name' 	=> 'required|alpha|min:2',
-		'sex' 			=> 'required',
-		'birth_day' 	=> 'required|alpha_num',
-		'birth_month' 	=> 'required|alpha_num',
-		'birth_year' 	=> 'required|alpha_num',
+		'last_name' 	=> 'required|alpha|min:2'
 	);
 
 	/**
@@ -43,6 +39,16 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	public function prices()
 	{
 		return $this->belongsToMany('Price');
+	}
+	
+	public function addresses()
+	{
+		return $this->belongsToMany('Address');
+	}
+	
+	public function assets()
+	{
+		return $this->belongsToMany('Asset');
 	}
 
 }

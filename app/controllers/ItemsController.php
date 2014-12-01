@@ -20,6 +20,9 @@ class ItemsController extends \BaseController {
 		/*$labels = Label::with('items')->where('public','=',1)->get();
 		return $labels;*/
 		//return 'end';
+		$t 		= Helper::helloWorld();
+		$d 	= Helper::get_time_ago(strtotime('now'));
+		//return "test". $d;
 
 		$items = Item::with('content','comments','votes','votedusers','labels')->where('public','=',1)->get();
 		//return $items;

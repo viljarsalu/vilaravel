@@ -2,7 +2,7 @@
 <p class="text-danger">{{ $error }}</p>
 @endforeach
 
-{{ Form::open(array('url'=>'item/create', 'role'=>'form', 'id'=>'remind')) }}
+{{ Form::open(array('url'=>'item/create', 'role'=>'form', 'id'=>'create')) }}
     <label for="public">Make public</label>
     <input type="checkbox" name="public" id="public" />
     <fieldset>
@@ -41,12 +41,6 @@
     </fieldset>
 
     <fieldset>
-        <legend>Location</legend>
-        {{ Form::label('address', 'Address') }}
-        {{ Form::text('address', null, array('class'=>'form-control', 'placeholder'=>Lang::get('text.address'),'id'=>'address')) }}
-    </fieldset>
-
-    <fieldset>
         <legend>Item Content</legend>
         {{ Form::label('title', 'Title') }}
         {{ Form::text('title', null, array('class'=>'form-control', 'placeholder'=>Lang::get('text.title'),'id'=>'title')) }}
@@ -54,6 +48,28 @@
         {{ Form::textarea('description', null, array('class'=>'form-control', 'placeholder'=>Lang::get('text.description'),'id'=>'description')) }}
     </fieldset>
 
-    {{ Form::submit(Lang::get('text.send_reminder'), array('class'=>'btn btn-large btn-primary')) }}
+<!-- existing address -->
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Choose address</h3>
+            <ul class="list-inline">
+            @foreach( $existing_address as $key=>$value )
+                <li>
+                    <div style="border:1px solid #c8c8c8; padding:10px;">
+                        
+                        <p>{{ $value->street_address }}</p>
+                        {{ Form::radio('existing_address_id', $value->id); }}
+                    </div>
+                </li>
+            @endforeach
+            </ul>
+        </div>
+    </div>
+<!-- / existing address -->
+
+    @include('address.create')
+    
+    {{ Form::submit(Lang::get('text.save'), array('class'=>'btn btn-large btn-primary')) }}
 
 {{ Form::close() }}
+
