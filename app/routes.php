@@ -11,6 +11,9 @@
 |
 */
 
+// test
+Route::controller('hello','HelloController');
+
 // home
 Route::get('/', 'HomeController@getIndex');
 
