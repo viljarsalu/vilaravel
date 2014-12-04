@@ -11,6 +11,15 @@
 	</div>
 </div>
 
+<!-- users items -->
+<div class="row">
+	<div class="col-md-12">
+		@foreach ($items as $key => $value)
+			<p>{{ $value->content }}</p>
+		@endforeach
+	</div>
+</div>
+
 <div class="row">
 
 	<div class="col-md-6">

@@ -95,16 +95,20 @@ class UsersController extends BaseController {
 		$user_id 	= Auth::user()->id;
 		$user 		= User::find($user_id);
 
+		$items = Item::with('content')->where('user_id','=',$user_id)->get();
+		//return $items;
+		//return $user->items;
+
 		$usr = $user->get();
 		$this->layout->title 			= 'tere tulemast!';
 	   	$this->layout->metaDescription 	= Lang::get('text.meta_content') . ' ';
 	   	$this->layout->metaKeywords 	= Lang::get('text.keywords') . ' ';
-	   	$this->layout->content 			= View::make('users.dashboard', array('user'=>$usr,'userinfo'=>$user->userinfo));
+	   	$this->layout->content 			= View::make('users.dashboard', array('user'=>$usr, 'userinfo'=>$user->userinfo, 'items'=>$items));
 	}
 
 	public function getList() {
-		$userid 	= Auth::user()->id;
-		$username 	= Auth::user()->first_name;
+		$userid 						= Auth::user()->id;
+		$username 						= Auth::user()->first_name;
     	$this->layout->title 			= '';
 	   	$this->layout->metaDescription 	= Lang::get('text.meta_content');
 	   	$this->layout->metaKeywords 	= Lang::get('text.keywords');

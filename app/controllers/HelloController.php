@@ -44,15 +44,20 @@ class HelloController extends \BaseController {
 
 		return "original name:" . $picture_name;*/
 
-			$file 	= Input::file('picture');
+			/*$file 	= Input::file('picture');
 			$path 	= public_path() . '/uploads';
 
 			$uploadedFile = Image::upload($file,$path,false);
 			$thumb 	= Image::thumb($uploadedFile, 200, 200);
 			//$medium = Image::resize($uploadedFile, 600);
-			$large 	= Image::resize($uploadedFile, 800);
+			$large 	= Image::resize($uploadedFile, 800);*/
 
-			return $path . ' ' . $file->getClientOriginalName();
+		$image 				= Input::file('picture');
+		$destinationPath 	= public_path() . '/uploads';
+		$filename 			= $image->getClientOriginalName();
+		$image->move($destinationPath, $filename);
+
+			return 'destination: ' . $destinationPath;
 		
 	}
 
