@@ -4,11 +4,11 @@
 
 {{-- Form::open(array('url'=>'address/store', 'role'=>'form', 'id'=>'address')) --}}
     
-    <div class="row">
+    <!-- <div class="row">
         <div class="col-md-12">
             <h3>Add address</h3>
         </div>
-    </div>
+    </div> -->
 
     <div class="row">
         <div class="col-md-12">

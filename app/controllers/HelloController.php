@@ -35,39 +35,21 @@ class HelloController extends \BaseController {
 	}
 	public function postUpload()
 	{
-		/*$pic = Input::file('picture');
-		$picture_name = $pic->getClientOriginalName();
-		$pic->move('imagesTEST',$picture_name);
-
-		$pic_final = 'images/'.$picture_name;
-
-
-		return "original name:" . $picture_name;*/
-
-			/*$file 	= Input::file('picture');
-			$path 	= public_path() . '/uploads';
-
-			$uploadedFile = Image::upload($file,$path,false);
-			$thumb 	= Image::thumb($uploadedFile, 200, 200);
-			//$medium = Image::resize($uploadedFile, 600);
-			$large 	= Image::resize($uploadedFile, 800);*/
-
+		
 		$image 		= Input::file('picture');
-		$filename 	= $image->getClientOriginalName(); 
-		/*Image::make($image->getRealPath())->save(public_path() . '/uploads/' . $filename);
-		return $filename;*/
-		if( Image::make($image->getRealPath())->resize('100','100')->save(public_path() . '/uploads/' . $filename) ) {
+		$filename 	= $image->getClientOriginalName();
+		// set image
+		$img 		= Image::make($image->getRealPath());
+		
+		// resize image
+		$img->resize('100','100');
+		
+		// save image
+		if( $img->save(public_path() . '/uploads/' . $filename) ) {
 			return 'image uploaded';
 		} else {
 			return 'something goes wrong';
 		}
-		//return $image->getClientOriginalName();
-		/*
-		$destinationPath 	= public_path() . '/uploads';
-		$filename 			= $image->getClientOriginalName();
-		$image->move($destinationPath, $filename);
-
-		return 'destination: ' . $destinationPath;*/
 		
 	}
 

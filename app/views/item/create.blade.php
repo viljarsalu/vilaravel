@@ -1,12 +1,32 @@
+<style type="text/css">
+    fieldset {
+        border:1px solid #c8c8c8; padding:10px; margin-bottom: 20px;
+    }
+    legend {
+        border:1px solid #c8c8c8; padding:5px;
+    }
+</style>
+
 @foreach($errors->all() as $error)
 <p class="text-danger">{{ $error }}</p>
 @endforeach
 
-{{ Form::open(array('url'=>'item/create', 'role'=>'form', 'id'=>'create')) }}
-    <label for="public">Make public</label>
-    <input type="checkbox" name="public" id="public" />
+{{ Form::open(array('url'=>'item/create', 'role'=>'form', 'id'=>'create', 'files'=>'true')) }}
+    
     <fieldset>
-        <legend>Choose Type and Label</legend>
+        <legend>Step #1</legend>
+        <p>{{ Form::label('public', 'Make public') }}
+        {{ Form::checkbox('public', null, true, array('id'=>'public')) }}</p>
+
+        {{ Form::label('title', 'Title') }}
+        {{ Form::text('title', null, array('class'=>'form-control', 'placeholder'=>Lang::get('text.title'),'id'=>'title')) }}
+        {{ Form::label('description', 'Description') }}
+        {{ Form::textarea('description', null, array('class'=>'form-control', 'placeholder'=>Lang::get('text.description'),'id'=>'description')) }}
+    </fieldset>
+
+    
+    <fieldset>
+        <legend>Step #2</legend>
         <label for="type">Type</label>
 
         <select name="type" id="type">
@@ -25,7 +45,7 @@
     </fieldset>
 
     <fieldset>
-        <legend>Plan and Price</legend>
+        <legend>Step #3</legend>
         <ul class="list-inline">
             @foreach( $plansPrices as $key=>$value )
                 <li>
@@ -41,33 +61,37 @@
     </fieldset>
 
     <fieldset>
-        <legend>Item Content</legend>
-        {{ Form::label('title', 'Title') }}
-        {{ Form::text('title', null, array('class'=>'form-control', 'placeholder'=>Lang::get('text.title'),'id'=>'title')) }}
-        {{ Form::label('description', 'Description') }}
-        {{ Form::textarea('description', null, array('class'=>'form-control', 'placeholder'=>Lang::get('text.description'),'id'=>'description')) }}
+        <legend>Step #4</legend>
+        @include('item.upload.browseFile')
     </fieldset>
 
 <!-- existing address -->
     <div class="row">
         <div class="col-md-12">
-            <h3>Choose address</h3>
-            <ul class="list-inline">
-            @foreach( $existing_address as $key=>$value )
-                <li>
-                    <div style="border:1px solid #c8c8c8; padding:10px;">
-                        
-                        <p>{{ $value->street_address }}</p>
-                        {{ Form::radio('existing_address_id', $value->id); }}
-                    </div>
-                </li>
-            @endforeach
-            </ul>
+            <fieldset>
+                <legend>Step #5</legend>
+
+                <h3 class="text-center">Choose address</h3>
+                <ul class="list-inline">
+                    @foreach( $existing_address as $key=>$value )
+                    <li>
+                        <div style="border:1px solid #c8c8c8; padding:10px;">
+                            <p>{{ $value->street_address }}</p>
+                            {{ Form::radio('existing_address_id', $value->id); }}
+                        </div>
+                    </li>
+                    @endforeach
+                </ul>
+                <h3 class="text-center"> or<br />Add New Address</h3>
+
+                @include('address.create')
+
+            </fieldset>
         </div>
     </div>
 <!-- / existing address -->
-
-    @include('address.create')
+    
+    
     
     {{ Form::submit(Lang::get('text.save'), array('class'=>'btn btn-large btn-primary')) }}
 

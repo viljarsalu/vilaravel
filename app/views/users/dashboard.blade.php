@@ -14,9 +14,16 @@
 <!-- users items -->
 <div class="row">
 	<div class="col-md-12">
+		<ul class="list-inline">	
 		@foreach ($items as $key => $value)
-			<p>{{ $value->content }}</p>
+			<li>
+				<div style="border:1px solid #c8c8c8; padding:10px;">
+					<h3>{{ $value->content->title }}</h3>
+					<p>{{ $value->content->description }}</p>
+				</div>
+			</li>
 		@endforeach
+		</ul>
 	</div>
 </div>
 

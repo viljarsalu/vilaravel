@@ -91,6 +91,7 @@ class ItemController extends \BaseController {
  				// Attach Price to User
  				$user->prices()->attach($plansPrices->id);
 
+ 				// Address Block
  				$existing_address = Input::get('existing_address_id');
  				if ( $existing_address ) {
  					//return "existing_address " . Input::get('existing_address_id');
@@ -116,6 +117,33 @@ class ItemController extends \BaseController {
 	 				// Attach address to item
 	 				$item->addresses()->attach($address->id);
  				}
+
+				/*
+				*	IMAGE
+				*	save image to table and attach asset to user and item
+				*/
+ 				$image 		= Input::file('picture');
+				$filename 	= $image->getClientOriginalName();
+				$userPath	= public_path() . '/uploads/' . $user->id . '_' . $user->first_name . '_' . $user->last_name . '/' . $filename;
+				// set image
+				$img 		= Image::make($image->getRealPath());
+				// resize image
+				$img->resize('100','100');
+				// save image
+				if( $img->save($userPath) ) {
+					$asset 			= new Asset;
+					$asset->type 	= 'img'; 
+					$asset->source 	= $userPath;
+					$asset->save();
+
+					$userAsset = Asset::find($asset->id);
+					// Attach asset to item
+					$item->assets()->attach($asset->id);
+					// Attach asset to user
+					$user->assets()->attach($asset->id);
+				} else {
+					return Redirect::to('/item/create')->with('errormessage', Lang::get('text.something_went_wrong_saving_data_to_table'));
+				}
  				
  				return Redirect::to('/item/create')->with('message', Lang::get('text.saved') );
  			} else {
