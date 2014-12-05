@@ -52,12 +52,22 @@ class HelloController extends \BaseController {
 			//$medium = Image::resize($uploadedFile, 600);
 			$large 	= Image::resize($uploadedFile, 800);*/
 
-		$image 				= Input::file('picture');
+		$image 		= Input::file('picture');
+		$filename 	= $image->getClientOriginalName(); 
+		/*Image::make($image->getRealPath())->save(public_path() . '/uploads/' . $filename);
+		return $filename;*/
+		if( Image::make($image->getRealPath())->resize('100','100')->save(public_path() . '/uploads/' . $filename) ) {
+			return 'image uploaded';
+		} else {
+			return 'something goes wrong';
+		}
+		//return $image->getClientOriginalName();
+		/*
 		$destinationPath 	= public_path() . '/uploads';
 		$filename 			= $image->getClientOriginalName();
 		$image->move($destinationPath, $filename);
 
-			return 'destination: ' . $destinationPath;
+		return 'destination: ' . $destinationPath;*/
 		
 	}
 
