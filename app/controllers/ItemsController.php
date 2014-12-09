@@ -24,7 +24,7 @@ class ItemsController extends \BaseController {
 		$d 	= Helper::get_time_ago(strtotime('now'));
 		//return "test". $d;
 
-		$items = Item::with('content','comments','votes','votedusers','labels')->where('public','=',1)->orderBy('created_at','DESC')->get();
+		$items = Item::with('content','comments','votes','votedusers','labels','assets')->where('public','=',1)->orderBy('created_at','DESC')->get();
 		//return $items;
 
 		$this->layout->title 			= 'Items';

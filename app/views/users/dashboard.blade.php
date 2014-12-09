@@ -14,16 +14,30 @@
 <!-- users items -->
 <div class="row">
 	<div class="col-md-12">
+	<h2>My All Items</h2>
 		<ul class="list-inline">	
 		@foreach ($items as $key => $value)
 			<li>
-				<div style="border:1px solid #c8c8c8; padding:10px;">
+				<div style="border:1px solid #c8c8c8; padding:10px; margin-top:10px;">
 					<h3>{{ $value->content->title }}</h3>
 					<p>{{ $value->content->description }}</p>
 				</div>
 			</li>
 		@endforeach
 		</ul>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-12">
+		<h3>Gallery</h3>
+		
+		<ul class="list-inline">
+		@foreach ($assets as $key => $asset)
+			<li><img src="{{ $asset->source }}"/></li>
+		@endforeach
+		</ul>
+
 	</div>
 </div>
 

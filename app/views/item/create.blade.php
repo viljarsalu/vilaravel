@@ -62,6 +62,14 @@
 
     <fieldset>
         <legend>Step #4</legend>
+
+        <h3 class="text-center">choose from gallery</h3>
+        <ul class="list-inline">
+        @foreach ($assets as $key => $asset)
+            <li><img src="{{ $asset->source }}"/><br /><input type="radio" value="{{ $asset->id }}" name="item_id" /></li>
+        @endforeach
+        </ul>
+        <h3 class="text-center"> OR <br> add new</h3>
         @include('item.upload.browseFile')
     </fieldset>
 

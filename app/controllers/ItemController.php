@@ -27,15 +27,20 @@ class ItemController extends \BaseController {
 			return Redirect::to('/')->with('errormessage', Lang::get('text.please_log_in') );
 		}
 
+		$user_id 	= Auth::user()->id;
+		$user 		= User::find($user_id);
+
 		$label 			= Label::where('public','=',true)->get();// define it into model
 		$plansPrices 	= Price::where('public','=',true)->get();// define it into model
 		$existing_address = User::find(Auth::user()->id);
 		$existing_address = $existing_address->addresses;
+		$assets = $user->assets;
+
 
 		$this->layout->title 			= 'Add Item';
 	   	$this->layout->metaDescription 	= Lang::get('text.meta_content') . ' ';
 	   	$this->layout->metaKeywords 	= Lang::get('text.keywords') . ' ';
-	   	$this->layout->content 			= View::make('item.create', array( 'label' => $label, 'plansPrices' => $plansPrices, 'existing_address' => $existing_address ));
+	   	$this->layout->content 			= View::make('item.create', array( 'label' => $label, 'plansPrices' => $plansPrices, 'existing_address' => $existing_address, 'assets'=>$assets ));
 	}
 
 	/**
@@ -52,14 +57,18 @@ class ItemController extends \BaseController {
 			return Redirect::to('/')->with('errormessage', Lang::get('text.please_log_in') );
 		}
 
-		$user_id = Auth::user()->id;
-		$user = User::find($user_id);
+		$user_id 	= Auth::user()->id;
+		$user 		= User::find($user_id);
 
-		$validator = Validator::make(Input::all(), Item::$rules);
+		$validator 	= Validator::make(Input::all(), Item::$rules);
 
  		if ($validator->passes()) 
  		{
 
+ 			/* ITEM
+			*  Save item to table
+			*
+				*/
  			$item 			= new Item;
  			$item->paid 	= false;//vaja labimotelda
  			$item->public 	= ( Input::get('public') == 'on' ? true : false );
@@ -76,6 +85,10 @@ class ItemController extends \BaseController {
  			if( $saveItem ) 
  			{
  				// Save content;
+ 				/* ITEM CONTENT
+				*  Save content to table and associate it with item	
+				*
+ 				*/
  				$content 				= new Content;
  				$content->title 		= $title;
  				$content->description 	= $description;
@@ -91,15 +104,15 @@ class ItemController extends \BaseController {
  				// Attach Price to User
  				$user->prices()->attach($plansPrices->id);
 
- 				// Address Block
+ 				/* ADDRESS
+				*  Save address to table and attach asset to user and item	
+				*
+ 				*/
  				$existing_address = Input::get('existing_address_id');
  				if ( $existing_address ) {
- 					//return "existing_address " . Input::get('existing_address_id');
  					// Attach address to item
 	 				$item->addresses()->attach(Input::get('existing_address_id'));
  				} else {
- 					//return "new address";
- 					// address
 	 				// add new address into base
 	 				$address 					= new Address;
 	 				$address->street_address 	= Input::get('route') . " " . Input::get('street_number') . ", " . Input::get('administrative_area_level_1') . ", " . Input::get('country');
@@ -122,27 +135,37 @@ class ItemController extends \BaseController {
 				*	IMAGE
 				*	save image to table and attach asset to user and item
 				*/
- 				$image 		= Input::file('picture');
-				$filename 	= $image->getClientOriginalName();
-				$userPath	= public_path() . '/uploads/' . $user->id . '_' . $user->first_name . '_' . $user->last_name . '/' . $filename;
-				// set image
-				$img 		= Image::make($image->getRealPath());
-				// resize image
-				$img->resize('100','100');
-				// save image
-				if( $img->save($userPath) ) {
-					$asset 			= new Asset;
-					$asset->type 	= 'img'; 
-					$asset->source 	= $userPath;
-					$asset->save();
-
-					$userAsset = Asset::find($asset->id);
+				// item from user gallery
+				if( count(Input::get('item_id')) > 0 ) {
 					// Attach asset to item
-					$item->assets()->attach($asset->id);
-					// Attach asset to user
-					$user->assets()->attach($asset->id);
+					$item->assets()->attach(Input::get('item_id'));
 				} else {
-					return Redirect::to('/item/create')->with('errormessage', Lang::get('text.something_went_wrong_saving_data_to_table'));
+					// new item
+	 				$image 		= Input::file('picture');
+					$filename 	= $image->getClientOriginalName();
+					//$userPath	= public_path() . '/uploads/' . $user->id . '_' . $user->first_name . '_' . $user->last_name;
+					//$newDir 	= File::makeDirectory($userPath, 0775, true);
+					$savingPath	= public_path() . '/uploads/' . $user->id . '_' . $user->first_name . '_' . $user->last_name . $filename;
+					$userPath	= '/uploads/' . $user->id . '_' . $user->first_name . '_' . $user->last_name . $filename;
+					// set image
+					$img 		= Image::make($image->getRealPath());
+					// resize image
+					$img->resize('100','100');
+					// save image
+					if( $img->save($savingPath) ) {
+						$asset 			= new Asset;
+						$asset->type 	= 'img'; 
+						$asset->source 	= $userPath;
+						$asset->save();
+
+						//$userAsset = Asset::find($asset->id);
+						// Attach asset to item
+						$item->assets()->attach($asset->id);
+						// Attach asset to user
+						$user->assets()->attach($asset->id);
+					} else {
+						return Redirect::to('/item/create')->with('errormessage', Lang::get('text.something_went_wrong_saving_data_to_table'));
+					}
 				}
  				
  				return Redirect::to('/item/create')->with('message', Lang::get('text.saved') );

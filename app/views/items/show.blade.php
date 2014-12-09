@@ -12,8 +12,12 @@
                 @include('modals.google_map.modal', array('lat'=>$address->lat, 'lng'=>$address->lng) )
                 <!-- <a href="http://maps.googleapis.com/maps/api/directions/json?origin=6.914556,79.973194&destination={{ $address->lat }},{{ $address->lng }}&sensor=false" target="_blank">get distance</a> -->
             @endforeach
-           
-            <a href="/item/show/{{ $value->id }}/{{ Str::slug($value->content->title) }}"><img data-src="holder.js/300x300" alt="..."></a>
+
+            {{-- image place --}}
+            @foreach ( $value->assets as $k =>$asset)
+                <a href="/item/show/{{ $value->id }}/{{ Str::slug($value->content->title) }}"><img src="{{ $asset->source }}" alt="..."></a>
+            @endforeach
+            
             {{ $value->type }} / 
             @foreach( $value->labels as $key => $label )
              {{ $label->title }}
