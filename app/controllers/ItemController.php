@@ -191,7 +191,7 @@ class ItemController extends \BaseController {
 	public function getShow($id)
 	{
 		//return "item show" . $id;
-		$items = Item::with('content','comments','votes','votedusers','addresses','prices')->where('public','=',1)->where('id','=',$id)->get();
+		$items = Item::with('content','comments','votes','votedusers','addresses','prices','assets')->where('public','=',1)->where('id','=',$id)->get();
 		//return $items;
 
 		$this->layout->title 			= 'Item';
@@ -207,9 +207,17 @@ class ItemController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function edit($id)
+	public function getEdit($id)
 	{
-		return "item edit" . $id;
+		
+		$item = Item::find($id)->with('content')->get();
+
+		return $item;
+
+		$this->layout->title 			= 'Item edit';
+	   	$this->layout->metaDescription 	= Lang::get('text.meta_content') . ' ';
+	   	$this->layout->metaKeywords 	= Lang::get('text.keywords') . ' ';
+	   	$this->layout->content 			= View::make('item.edit', array('item' => $item) );
 	}
 
 	/**

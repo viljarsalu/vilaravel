@@ -20,7 +20,7 @@
 			<li>
 				<div style="border:1px solid #c8c8c8; padding:10px; margin-top:10px;">
 					<h3>{{ $value->content->title }}</h3>
-					<p>{{ $value->content->description }}</p>
+					<p>{{ $value->content->description }} <a href="/item/show/{{ $value->id }}">read more</a></p>
 				</div>
 			</li>
 		@endforeach

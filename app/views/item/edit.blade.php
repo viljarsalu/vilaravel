@@ -1,5 +1,5 @@
 <div class="row">
-@foreach($items as $key => $value)
+@foreach($item as $key => $value)
     <div class="col-sm-6 col-md-4">
         <div class="thumbnail">
             @foreach ($value->prices as $key => $price)

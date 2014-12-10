@@ -26,6 +26,7 @@
             <div class="caption">
                 <h3>{{ $value->content->title }} <small><?php echo Helper::get_time_ago(strtotime($value->created_at)); ?></small></h3>
                 <p>{{ $value->content->description }}</p>
+                <p><a href="/item/show/{{ $value->id }}">{{ Lang::get('read_more') }}</a></p>
             </div>
 
             <!-- votes -->
