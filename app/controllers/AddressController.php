@@ -69,9 +69,17 @@ class AddressController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function getChange($id)
 	{
-		//
+		$user = User::find($id);
+		$addresses = $user->addresses;
+		echo 'sdfsadfas';
+		return $addresses;
+
+		$this->layout->title 			= 'Item';
+	   	$this->layout->metaDescription 	= Lang::get('text.meta_content') . ' ';
+	   	$this->layout->metaKeywords 	= Lang::get('text.keywords') . ' ';
+	   	$this->layout->content 			= View::make('address.show', array('addresses' => $addresses) );
 	}
 
 

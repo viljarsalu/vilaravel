@@ -241,7 +241,8 @@ class ItemController extends \BaseController {
 	   		'price'			=> $price,
 	   		'prices'		=> $prices,
 	   		'asset'			=> $asset,
-	   		'assets'		=> $assets
+	   		'assets'		=> $assets,
+	   		'usr'			=> $userId
 	   		));
 	}
 

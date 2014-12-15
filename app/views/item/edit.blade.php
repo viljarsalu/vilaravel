@@ -29,7 +29,7 @@
 <div class="col-sm-6 col-md-4">
         <div class="thumbnail">
             @foreach ($price as $key => $prc)
-                <a href="#" data-toggle="modal" data-target="#addresses">
+                <a href="/address/change/{{ $usr }}" data-toggle="modal" data-target="#addresses">
                     <span class="glyphicon glyphicon-fire"></span> {{ $prc->title }}
                 </a>
             @endforeach
@@ -78,7 +78,7 @@
     
 </div>
 
-@include('modals.users_addresses.modal', array('addresses'=>$myAddresses) )
+@include('modals.users_addresses.modal')
 
 
 <style type="text/css">
