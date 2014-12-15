@@ -210,14 +210,39 @@ class ItemController extends \BaseController {
 	public function getEdit($id)
 	{
 		
-		$item = Item::find($id)->with('content')->get();
+		$item 	= Item::find($id)->content;
+		$votes 	= Item::find($id)->votes;
+		
+		// all users addresses
+		$myAddresses 	= Item::find($id)->user;
+		$userId 		= $myAddresses->id;
+		$myAddresses 	= User::find($userId)->addresses;
+		// current item address
+		$itemAddress 	= Item::find($id)->addresses; 
+		//return $myAddresses;
+	   	
+	   	// item price and plan
+	   	$price 	= Item::find($id)->prices;
 
-		return $item;
+	   	// all prices and plans
+	   	$prices = Price::all();
+
+	   	//assets
+	   	$asset 	= Item::find($id)->assets;
+	   	$assets = User::find($userId)->assets;
 
 		$this->layout->title 			= 'Item edit';
 	   	$this->layout->metaDescription 	= Lang::get('text.meta_content') . ' ';
 	   	$this->layout->metaKeywords 	= Lang::get('text.keywords') . ' ';
-	   	$this->layout->content 			= View::make('item.edit', array('item' => $item) );
+	   	$this->layout->content 			= View::make('item.edit', array(
+	   		'item' 			=> $item, 
+	   		'myAddresses'	=> $myAddresses, 
+	   		'itemAddress'	=> $itemAddress, 
+	   		'price'			=> $price,
+	   		'prices'		=> $prices,
+	   		'asset'			=> $asset,
+	   		'assets'		=> $assets
+	   		));
 	}
 
 	/**
