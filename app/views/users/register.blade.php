@@ -73,7 +73,7 @@
 
     <hr style="border:1px solid red;" />
     
-     @include('address.create')
+     @include('address.enter_address_google_map_component')
 
     {{ Form::submit(Lang::get('text.sign_up'), array('class'=>'btn btn-large btn-primary'))}}
     

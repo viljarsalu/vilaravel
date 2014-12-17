@@ -64,13 +64,10 @@
         <legend>Step #4</legend>
 
         <h3 class="text-center">choose from gallery</h3>
-        <ul class="list-inline">
-        @foreach ($assets as $key => $asset)
-            <li><img src="{{ $asset->source }}"/><br /><input type="radio" value="{{ $asset->id }}" name="item_id" /></li>
-        @endforeach
-        </ul>
+        @include('gallery.gallery_list_menu_component', array('assets'=>$assets))
+
         <h3 class="text-center"> OR <br> add new</h3>
-        @include('item.upload.browseFile')
+        @include('gallery.upload_to_gallery_component')
     </fieldset>
 
 <!-- existing address -->
@@ -80,19 +77,11 @@
                 <legend>Step #5</legend>
 
                 <h3 class="text-center">Choose address</h3>
-                <ul class="list-inline">
-                    @foreach( $existing_address as $key=>$value )
-                    <li>
-                        <div style="border:1px solid #c8c8c8; padding:10px;">
-                            <p>{{ $value->street_address }}</p>
-                            {{ Form::radio('existing_address_id', $value->id); }}
-                        </div>
-                    </li>
-                    @endforeach
-                </ul>
+                @include('address.address_list_menu_component', array('address_list'=>$address_list))
+
                 <h3 class="text-center"> or<br />Add New Address</h3>
 
-                @include('address.create')
+                @include('address.enter_address_google_map_component')
 
             </fieldset>
         </div>

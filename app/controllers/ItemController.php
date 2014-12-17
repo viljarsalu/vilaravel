@@ -33,14 +33,14 @@ class ItemController extends \BaseController {
 		$label 			= Label::where('public','=',true)->get();// define it into model
 		$plansPrices 	= Price::where('public','=',true)->get();// define it into model
 		$existing_address = User::find(Auth::user()->id);
-		$existing_address = $existing_address->addresses;
+		$address_list = $existing_address->addresses;
 		$assets = $user->assets;
 
 
 		$this->layout->title 			= 'Add Item';
 	   	$this->layout->metaDescription 	= Lang::get('text.meta_content') . ' ';
 	   	$this->layout->metaKeywords 	= Lang::get('text.keywords') . ' ';
-	   	$this->layout->content 			= View::make('item.create', array( 'label' => $label, 'plansPrices' => $plansPrices, 'existing_address' => $existing_address, 'assets'=>$assets ));
+	   	$this->layout->content 			= View::make('item.create', array( 'label' => $label, 'plansPrices' => $plansPrices, 'address_list' => $address_list, 'assets'=>$assets ));
 	}
 
 	/**
@@ -192,12 +192,28 @@ class ItemController extends \BaseController {
 	{
 		//return "item show" . $id;
 		$items = Item::with('content','comments','votes','votedusers','addresses','prices','assets')->where('public','=',1)->where('id','=',$id)->get();
-		//return $items;
-
+		$item 		= Item::find($id);
+		$price 		= $item->prices;
+		$address 	= $item->addresses;
+		$content 	= $item->content;
+		$asset 		= $item->assets;
+		$vote 		= $item->votes;
+		$votedUser 	= $item->votedusers;
+		$comments 	= $item->comments;
+		//return $address;
 		$this->layout->title 			= 'Item';
 	   	$this->layout->metaDescription 	= Lang::get('text.meta_content') . ' ';
 	   	$this->layout->metaKeywords 	= Lang::get('text.keywords') . ' ';
-	   	$this->layout->content 			= View::make('item.show', array('items' => $items) );
+	   	$this->layout->content 			= View::make('item.show', array(
+	   		'item' 		=> $item,
+	   		'price' 	=> (count($price) 	  > 0 ? $price[0] 	  : false), 
+	   		'content' 	=> $content, 
+	   		'address' 	=> (count($address)   > 0 ? $address[0]   : false),
+	   		'asset' 	=> (count($asset) 	  > 0 ? $asset[0] 	  : false),
+	   		'vote' 		=> (count($vote)	  > 0 ? $vote[0] 	  : false),
+	   		'voterCheck'=> (count($votedUser) > 0 ? $votedUser[0] : false),
+	   		'comments' 	=> (count($comments)  > 0 ? $comments     : false)
+	   	));
 	}
 
 	/**

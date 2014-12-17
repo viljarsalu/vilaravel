@@ -1,2 +1,0 @@
-{{ $addresses }}
-asdfsadf asdfsad fas

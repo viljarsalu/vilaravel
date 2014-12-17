@@ -1,0 +1,1 @@
+cmd tree /F /A > "path"\filename.txt

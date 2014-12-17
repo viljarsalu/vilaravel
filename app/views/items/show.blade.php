@@ -6,7 +6,7 @@
             @foreach ($value->prices as $key => $price)
                 <span class="glyphicon glyphicon-fire"></span> {{ $price->title }}
             @endforeach
-
+            
             @foreach ($value->addresses as $key => $address)
                 <a href="#" data-toggle="modal" data-target="#google_map" class="pull-right" data-lat="{{ $address->lat }}" data-lng="{{ $address->lng }}"><span class="glyphicon glyphicon-map-marker"></span> {{ $address->street_address }}</a>
                 @include('modals.google_map.modal', array('lat'=>$address->lat, 'lng'=>$address->lng) )
