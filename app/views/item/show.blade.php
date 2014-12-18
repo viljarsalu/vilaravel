@@ -14,7 +14,15 @@
         @endif
 
             <div class="caption">
-                <h3>{{ $content->title }} <small><?php echo Helper::get_time_ago(strtotime($item->created_at)); ?></small></h3>
+                <h3>{{ $content->title }} 
+                    <small>
+                @if ( $item->updated_at > $item->created_at)
+                    updated <?php echo Helper::get_time_ago(strtotime($item->updated_at)); ?>
+                @else 
+                    created <?php echo Helper::get_time_ago(strtotime($item->created_at)); ?>
+                @endif
+                    </small>
+                </h3>
                 <p>{{ $content->description }}</p>
                 <p><a href="{{ URL::previous() }}">Go back</a></p>
             </div>
@@ -35,11 +43,3 @@
     </div>
 
 </div>
-
-
-<style type="text/css">
-    .votes a > span:last-child {
-        margin-left: 10px;
-    }
-</style>
-<script src="http://imsky.github.io/holder/holder.js" />

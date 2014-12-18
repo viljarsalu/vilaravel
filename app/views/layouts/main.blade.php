@@ -127,16 +127,7 @@
           <p>Homepage</p>
         </div>
         <div class="col-md-4">
-          <p class="pull-left">
-            <script language="javascript">
-              <!--
-              var nic="info";
-              var at="@";
-              var dom="homepage.com"
-              document.write("<a href=mailto:"+nic+at+dom+">"+nic+at+dom+"</a>");
-              --> 
-            </script>
-          </p>
+          <p class="pull-left" id="em">...</p>
         </div>
         <div>
           <p class="pull-right"><a href="#tingimused" data-toggle="modal" data-target="#tingimused">Kasutaja tingimused</a></p>
@@ -159,5 +150,45 @@
 
     <!-- need to concat -->
     {{ HTML::script('assets/js/comments.js') }}
+    {{ HTML::script('assets/js/edit_gallery.js') }}
+
+
+    <style type="text/css">
+        h3 > small {
+          display: block;
+        }
+        .votes a > span:last-child {
+            margin-left: 10px;
+        }
+        .form-control.edit {
+            border: 0 none;
+            border-radius: 0;
+            box-shadow: 0 0 0;
+            display: inline-block;
+            padding: 0;
+            width: 100%;
+        }
+        .form-control.edit:focus, 
+        .form-control.edit:hover {
+            box-shadow: 0 1px 4px rgba(0,0,0,0.5);
+            padding-left: 4px;
+        }
+        .form-control.h3 {
+            font-size: 24px; 
+        }
+        a.edit{
+          color: red;
+        }
+    </style>
+    {{ HTML::script('http://imsky.github.io/holder/holder.js') }}
+    <script language="javascript">
+      <!--
+      var nic="info";
+      var at="@";
+      var dom="homepage.com";
+      document.getElementById('em').innerHTML = "<a href=mailto:"+nic+at+dom+">"+nic+at+dom+"</a>";
+      //document.write("<a href=mailto:"+nic+at+dom+">"+nic+at+dom+"</a>");
+      --> 
+    </script>
   </body>
 </html>

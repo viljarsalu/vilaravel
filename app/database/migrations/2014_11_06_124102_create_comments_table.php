@@ -21,6 +21,7 @@ class CreateCommentsTable extends Migration {
 	        $table->string('title');
 	        $table->string('comment');			
 	        $table->string('author');		
+	        $table->boolean('public');		
 	        $table->timestamps();
 		});
 	}

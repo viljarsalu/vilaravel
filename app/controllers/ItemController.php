@@ -136,9 +136,9 @@ class ItemController extends \BaseController {
 				*	save image to table and attach asset to user and item
 				*/
 				// item from user gallery
-				if( count(Input::get('item_id')) > 0 ) {
+				if( count(Input::get('asset_id')) > 0 ) {
 					// Attach asset to item
-					$item->assets()->attach(Input::get('item_id'));
+					$item->assets()->attach(Input::get('asset_id'));
 				} else {
 					// new item
 	 				$image 		= Input::file('picture');
@@ -191,7 +191,7 @@ class ItemController extends \BaseController {
 	public function getShow($id)
 	{
 		//return "item show" . $id;
-		$items = Item::with('content','comments','votes','votedusers','addresses','prices','assets')->where('public','=',1)->where('id','=',$id)->get();
+		//$items = Item::with('content','comments','votes','votedusers','addresses','prices','assets')->where('public','=',1)->where('id','=',$id)->get();
 		$item 		= Item::find($id);
 		$price 		= $item->prices;
 		$address 	= $item->addresses;
@@ -217,8 +217,8 @@ class ItemController extends \BaseController {
 	}
 
 	/**
-	 * Show the form for editing the specified resource.
-	 * GET /item/{id}/edit
+	 * Edit the form for editing the specified resource.
+	 * GET /item/edit/{id}
 	 *
 	 * @param  int  $id
 	 * @return Response
@@ -226,40 +226,73 @@ class ItemController extends \BaseController {
 	public function getEdit($id)
 	{
 		
-		$item 	= Item::find($id)->content;
-		$votes 	= Item::find($id)->votes;
-		
-		// all users addresses
-		$myAddresses 	= Item::find($id)->user;
-		$userId 		= $myAddresses->id;
-		$myAddresses 	= User::find($userId)->addresses;
-		// current item address
-		$itemAddress 	= Item::find($id)->addresses; 
-		//return $myAddresses;
-	   	
-	   	// item price and plan
-	   	$price 	= Item::find($id)->prices;
-
-	   	// all prices and plans
-	   	$prices = Price::all();
-
-	   	//assets
-	   	$asset 	= Item::find($id)->assets;
-	   	$assets = User::find($userId)->assets;
-
-		$this->layout->title 			= 'Item edit';
+		$item 		= Item::find($id);
+		$gallery 	= User::find(Auth::user()->id)->assets;
+		$price 		= $item->prices;
+		$address 	= $item->addresses;
+		$content 	= $item->content;
+		$asset 		= $item->assets;
+		$vote 		= $item->votes;
+		$votedUser 	= $item->votedusers;
+		$comments 	= $item->comments;
+		//return $gallery;
+		$this->layout->title 			= 'Item';
 	   	$this->layout->metaDescription 	= Lang::get('text.meta_content') . ' ';
 	   	$this->layout->metaKeywords 	= Lang::get('text.keywords') . ' ';
 	   	$this->layout->content 			= View::make('item.edit', array(
-	   		'item' 			=> $item, 
-	   		'myAddresses'	=> $myAddresses, 
-	   		'itemAddress'	=> $itemAddress, 
-	   		'price'			=> $price,
-	   		'prices'		=> $prices,
-	   		'asset'			=> $asset,
-	   		'assets'		=> $assets,
-	   		'usr'			=> $userId
-	   		));
+	   		'item' 		=> $item,
+	   		'price' 	=> (count($price) 	  > 0 ? $price[0] 	  : false), 
+	   		'content' 	=> $content, 
+	   		'address' 	=> (count($address)   > 0 ? $address[0]   : false),
+	   		'asset' 	=> (count($asset) 	  > 0 ? $asset[0] 	  : false),
+	   		'vote' 		=> (count($vote)	  > 0 ? $vote[0] 	  : false),
+	   		'voterCheck'=> (count($votedUser) > 0 ? $votedUser[0] : false),
+	   		'comments' 	=> (count($comments)  > 0 ? $comments     : false),
+	   		'gallery' 	=> (count($gallery)   > 0 ? $gallery      : false)
+	   	));
+	}
+
+	/**
+	 * Post the form for editing the specified resource.
+	 * GET /item/edit/{id}
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function postUpdate()
+	{
+		
+		$itemId = Input::get('item_id');
+		$item 	= Item::find($itemId);
+		$item->touch();
+		// update content
+		$content 	= Content::where('item_id','=',$itemId);//$item->content;
+		$content->update(array(
+			'title' => Input::get('title'),
+			'description' => Input::get('description')
+		));
+		return Redirect::back()->with('message', Lang::get('text.saved'));
+		
+		/*$asset 		= $item->assets;
+		$address 	= $item->addresses;
+		$price 		= $item->prices;
+		$vote 		= $item->votes;
+		$votedUser 	= $item->votedusers;
+		$comments 	= $item->comments;
+		//return $content;
+		$this->layout->title 			= 'Item';
+	   	$this->layout->metaDescription 	= Lang::get('text.meta_content') . ' ';
+	   	$this->layout->metaKeywords 	= Lang::get('text.keywords') . ' ';
+	   	$this->layout->content 			= View::make('item.edit', array(
+	   		'item' 		=> $item,
+	   		'price' 	=> (count($price) 	  > 0 ? $price[0] 	  : false), 
+	   		'content' 	=> $content, 
+	   		'address' 	=> (count($address)   > 0 ? $address[0]   : false),
+	   		'asset' 	=> (count($asset) 	  > 0 ? $asset[0] 	  : false),
+	   		'vote' 		=> (count($vote)	  > 0 ? $vote[0] 	  : false),
+	   		'voterCheck'=> (count($votedUser) > 0 ? $votedUser[0] : false),
+	   		'comments' 	=> (count($comments)  > 0 ? $comments     : false)
+	   	));*/
 	}
 
 	/**

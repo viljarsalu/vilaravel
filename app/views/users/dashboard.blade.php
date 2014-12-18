@@ -19,8 +19,14 @@
 		@foreach ($items as $key => $value)
 			<li>
 				<div style="border:1px solid #c8c8c8; padding:10px; margin-top:10px;">
-					<h3>{{ $value->content->title }}</h3>
-					<p>{{ $value->content->description }} <a href="/item/show/{{ $value->id }}">read more</a></p>
+					<h3>
+						{{ $value->content->title }}
+						<small>created at <?php echo Helper::get_time_ago(strtotime($value->created_at));?></small>
+						<small>updated at <?php echo Helper::get_time_ago(strtotime($value->updated_at));?></small>
+					</h3>
+					<p>{{ $value->content->description }} 
+					<a href="/item/show/{{ $value->id }}">read more</a> 
+					<a href="/item/edit/{{ $value->id }}" class="edit">edit <span class="glyphicon glyphicon-pencil"></span></a></p>
 				</div>
 			</li>
 		@endforeach
