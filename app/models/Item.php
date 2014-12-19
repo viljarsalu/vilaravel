@@ -50,6 +50,11 @@ class Item extends \Eloquent {
 		return $this->belongsToMany('Address');
 	}
 
+	public function addresse()
+	{
+		return $this->belongsToMany('Address');
+	}
+
 	
 	public function assets()
 	{

@@ -12,6 +12,16 @@ class AddressController extends \BaseController {
 		//
 	}
 
+	/**
+	 * Return address.
+	 *
+	 * @return Response
+	 */
+	public function getGet($addressId)
+	{
+		$address = Address::find($addressId);
+		return $address;
+	}
 
 	/**
 	 * Show the form for creating a new resource.

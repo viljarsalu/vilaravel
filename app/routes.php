@@ -43,3 +43,6 @@ Route::controller('vote','VotesController');
 
 // address
 Route::controller('address','AddressController');
+
+// picture
+Route::controller('assets','AssetsController');

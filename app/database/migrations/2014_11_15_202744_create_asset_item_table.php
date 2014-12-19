@@ -23,7 +23,6 @@ class CreateAssetItemTable extends Migration {
 		});
 	}
 
-
 	/**
 	 * Reverse the migrations.
 	 *

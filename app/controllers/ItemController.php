@@ -225,25 +225,30 @@ class ItemController extends \BaseController {
 	 */
 	public function getEdit($id)
 	{
-		
+		if ( Auth::guest() ) 
+		{
+			return Redirect::to('/')->with('errormessage', Lang::get('text.please_log_in') );
+		}
 		$item 		= Item::find($id);
 		$gallery 	= User::find(Auth::user()->id)->assets;
 		$price 		= $item->prices;
 		$address 	= $item->addresses;
+		$addresses 	= User::find(Auth::user()->id)->addresses;
 		$content 	= $item->content;
 		$asset 		= $item->assets;
 		$vote 		= $item->votes;
 		$votedUser 	= $item->votedusers;
 		$comments 	= $item->comments;
-		//return $gallery;
+		//return $addresses;
 		$this->layout->title 			= 'Item';
 	   	$this->layout->metaDescription 	= Lang::get('text.meta_content') . ' ';
 	   	$this->layout->metaKeywords 	= Lang::get('text.keywords') . ' ';
-	   	$this->layout->content 			= View::make('item.edit', array(
+	   	$this->layout->content 			= View::make('item.edit', array (
 	   		'item' 		=> $item,
 	   		'price' 	=> (count($price) 	  > 0 ? $price[0] 	  : false), 
 	   		'content' 	=> $content, 
 	   		'address' 	=> (count($address)   > 0 ? $address[0]   : false),
+	   		'addresses' => (count($addresses) > 0 ? $addresses 	  : false),
 	   		'asset' 	=> (count($asset) 	  > 0 ? $asset[0] 	  : false),
 	   		'vote' 		=> (count($vote)	  > 0 ? $vote[0] 	  : false),
 	   		'voterCheck'=> (count($votedUser) > 0 ? $votedUser[0] : false),
@@ -261,38 +266,46 @@ class ItemController extends \BaseController {
 	 */
 	public function postUpdate()
 	{
-		
-		$itemId = Input::get('item_id');
-		$item 	= Item::find($itemId);
+		if ( Auth::guest() ) 
+		{
+			return Redirect::to('/')->with('errormessage', Lang::get('text.please_log_in') );
+		}
+		//return Input::all();
+		//return Input::get('public');
+		$itemId 	= Input::get('item_id');
+		$item 		= Item::find($itemId);
+		$assetId 	= Input::get('asset_id');
+		$addressId 	= Input::get('address_id');
+		$asset 		= $item->assets;
+		// update timestamp
 		$item->touch();
+
+		// update public status
+		$public = Input::get('public');
+		$item->update(array('public' => ( $public == 'on' ? true : '') ));
+
 		// update content
-		$content 	= Content::where('item_id','=',$itemId);//$item->content;
+		$content 	= Content::where('item_id','=',$itemId);
 		$content->update(array(
 			'title' => Input::get('title'),
 			'description' => Input::get('description')
 		));
+
+		// Update asset pivot updateExistingPivot didnt get work :(
+		// a little workground here, first delete than insert
+		if( $item->assets()->detach() )
+		{
+			$item->assets()->attach($assetId);// insert new row
+		}
+
+		// Update address pivot updateExistingPivot didnt get work :(
+		// a little workground here, first delete than insert
+		if( $item->addresses()->detach() )
+		{
+			$item->addresses()->attach($addressId);// insert new row
+		}
+
 		return Redirect::back()->with('message', Lang::get('text.saved'));
-		
-		/*$asset 		= $item->assets;
-		$address 	= $item->addresses;
-		$price 		= $item->prices;
-		$vote 		= $item->votes;
-		$votedUser 	= $item->votedusers;
-		$comments 	= $item->comments;
-		//return $content;
-		$this->layout->title 			= 'Item';
-	   	$this->layout->metaDescription 	= Lang::get('text.meta_content') . ' ';
-	   	$this->layout->metaKeywords 	= Lang::get('text.keywords') . ' ';
-	   	$this->layout->content 			= View::make('item.edit', array(
-	   		'item' 		=> $item,
-	   		'price' 	=> (count($price) 	  > 0 ? $price[0] 	  : false), 
-	   		'content' 	=> $content, 
-	   		'address' 	=> (count($address)   > 0 ? $address[0]   : false),
-	   		'asset' 	=> (count($asset) 	  > 0 ? $asset[0] 	  : false),
-	   		'vote' 		=> (count($vote)	  > 0 ? $vote[0] 	  : false),
-	   		'voterCheck'=> (count($votedUser) > 0 ? $votedUser[0] : false),
-	   		'comments' 	=> (count($comments)  > 0 ? $comments     : false)
-	   	));*/
 	}
 
 	/**

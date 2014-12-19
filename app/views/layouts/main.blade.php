@@ -149,9 +149,22 @@
     {{-- HTML::script('assets/bootstrap/js/bootstrap.min.js') --}}
 
     <!-- need to concat -->
+    {{-- HTML::script('assets/js/vilaravel.js') --}}
     {{ HTML::script('assets/js/comments.js') }}
     {{ HTML::script('assets/js/edit_gallery.js') }}
+    {{ HTML::script('assets/js/edit_address.js') }}
 
+
+<script type="text/javascript">
+// load main google maps scripts
+function loadScript() {
+  var script    = document.createElement('script');
+  script.type   = 'text/javascript';
+  script.src    = 'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&callback=initialize';
+  document.body.appendChild(script);
+}
+window.onload   = loadScript;
+</script>
 
     <style type="text/css">
         h3 > small {
@@ -176,9 +189,13 @@
         .form-control.h3 {
             font-size: 24px; 
         }
-        a.edit{
+        a.edit {
           color: red;
         }
+        a.edit > img:hover {
+          box-shadow: 0 1px 4px rgba(0,0,0,0.5);
+        }
+        #map-canvas { height: 300px; }
     </style>
     {{ HTML::script('http://imsky.github.io/holder/holder.js') }}
     <script language="javascript">
