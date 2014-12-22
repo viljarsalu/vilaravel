@@ -1,4 +1,4 @@
-$('#gallery').find('input').change(function(e){
+$('#gallery').find('input[name="asset_id"]').change(function(e){
 	$.ajax({
 		url: 'http://localhost:8000/assets/img/' + this.value,
 		beforeSend: function( xhr ) {

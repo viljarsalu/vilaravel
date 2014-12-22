@@ -4,8 +4,10 @@
         <div class="thumbnail">
 
             <span class="glyphicon glyphicon-fire"></span> {{ $price->title }}
-
-            @include('address.show_google_map_component', array('address'=>$address))
+            <a href="#google_map" data-toggle="modal" data-target="#google_map" data-lat="{{$address->lat}}" data-lng="{{$address->lng}}" class="pull-right">
+                <span class="glyphicon glyphicon-map-marker">&nbsp;</span> 
+                {{ $address->street_address }}
+            </a>
             
         @if ($asset)
             <a href="#/item/show/{{$item->id}}/{{ Str::slug($content->title) }}"><img src="{{ $asset->source }}" alt="{{$content->title}}" /></a>
@@ -43,3 +45,5 @@
     </div>
 
 </div>
+
+@include('address.show_on_google_map_component')

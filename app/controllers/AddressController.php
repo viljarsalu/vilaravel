@@ -23,6 +23,37 @@ class AddressController extends \BaseController {
 		return $address;
 	}
 
+	public function postUpdateaddress(){
+		$user = User::find(Input::get('user_id'));
+		$item = Item::find(Input::get('item_id'));
+		$address 					= new Address;
+		$address->street_address 	= Input::get('route') . " " . Input::get('street_number') . ", " . Input::get('administrative_area_level_1') . ", " . Input::get('country');
+		$address->city 				= Input::get('locality');
+		$address->state 			= Input::get('administrative_area_level_1');
+		$address->country 			= Input::get('country');
+		$address->zip 				= Input::get('postal_code');
+		$address->lat 				= Input::get('lat');
+		$address->lng 				= Input::get('lng');
+		$address->save();
+		
+		$saved = 0;
+		// add new aadress
+		$user->addresses()->attach($address->id);
+		// update address
+		if( $item->addresses()->detach() )
+		{
+			$item->addresses()->attach($address->id);
+			$saved = 1;
+		}
+
+		return Response::json( array (
+        		'street_address' 	=> $address->street_address,
+        		'lat'				=> Input::get('lat'),
+        		'lng'				=> Input::get('lng'),
+        		'address_id'		=> $address->id
+        	));
+    }
+
 	/**
 	 * Show the form for creating a new resource.
 	 *

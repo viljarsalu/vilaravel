@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap-theme.min.css">
 
     {{-- HTML::style('assets/bootstrap/css/bootstrap.min.css') --}}
-    {{-- HTML::style('assets/css/styles.css') --}}
+    {{ HTML::style('assets/css/vilaravel.css') }}
     {{-- HTML::style('assets/css/smoothState/smoothState.css') --}}
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
@@ -148,64 +148,20 @@
     {{-- HTML::script('assets/jquery/jquery.smoothState.js') --}}
     {{-- HTML::script('assets/bootstrap/js/bootstrap.min.js') --}}
 
-    <!-- need to concat -->
-    {{-- HTML::script('assets/js/vilaravel.js') --}}
-    {{ HTML::script('assets/js/comments.js') }}
-    {{ HTML::script('assets/js/edit_gallery.js') }}
-    {{ HTML::script('assets/js/edit_address.js') }}
+    {{ HTML::script('assets/js/vilaravel.js') }}
+    
+    @if( Auth::check() )
+      {{ HTML::script('assets/js/edit_gallery.js') }}
+    @endif
 
+    @if( Request::is('items') || Request::is('items/*') || Request::is('item') || Request::is('item/*') )
+      {{ HTML::script('assets/js/comments.js') }}
+      {{--@include('address.show_on_google_map_component')--}}
+    @elseif( Request::is('edit') || Request::is('edit/*') )
+      {{--@include('address.edit_address_on_google_map_component')--}}
+    @endif
 
-<script type="text/javascript">
-// load main google maps scripts
-function loadScript() {
-  var script    = document.createElement('script');
-  script.type   = 'text/javascript';
-  script.src    = 'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&callback=initialize';
-  document.body.appendChild(script);
-}
-window.onload   = loadScript;
-</script>
-
-    <style type="text/css">
-        h3 > small {
-          display: block;
-        }
-        .votes a > span:last-child {
-            margin-left: 10px;
-        }
-        .form-control.edit {
-            border: 0 none;
-            border-radius: 0;
-            box-shadow: 0 0 0;
-            display: inline-block;
-            padding: 0;
-            width: 100%;
-        }
-        .form-control.edit:focus, 
-        .form-control.edit:hover {
-            box-shadow: 0 1px 4px rgba(0,0,0,0.5);
-            padding-left: 4px;
-        }
-        .form-control.h3 {
-            font-size: 24px; 
-        }
-        a.edit {
-          color: red;
-        }
-        a.edit > img:hover {
-          box-shadow: 0 1px 4px rgba(0,0,0,0.5);
-        }
-        #map-canvas { height: 300px; }
-    </style>
     {{ HTML::script('http://imsky.github.io/holder/holder.js') }}
-    <script language="javascript">
-      <!--
-      var nic="info";
-      var at="@";
-      var dom="homepage.com";
-      document.getElementById('em').innerHTML = "<a href=mailto:"+nic+at+dom+">"+nic+at+dom+"</a>";
-      //document.write("<a href=mailto:"+nic+at+dom+">"+nic+at+dom+"</a>");
-      --> 
-    </script>
+
   </body>
 </html>

@@ -8,10 +8,10 @@
             @endforeach
             
             @foreach ($value->addresses as $key => $address)
-                
-                @include('modals.google_map.modal', array('id' => $value->id, 'address'=>$address) )
-                
-                <!-- <a href="http://maps.googleapis.com/maps/api/directions/json?origin=6.914556,79.973194&destination={{ $address->lat }},{{ $address->lng }}&sensor=false" target="_blank">get distance</a> -->
+                <a href="#google_map" data-toggle="modal" data-target="#google_map" data-lat="{{$address->lat}}" data-lng="{{$address->lng}}" class="pull-right">
+                    <span class="glyphicon glyphicon-map-marker">&nbsp;</span> 
+                    {{ $address->street_address }}
+                </a>
             @endforeach
 
             {{-- image place --}}
@@ -134,3 +134,5 @@
     </div>
 @endforeach
 </div>
+
+@include('address.show_on_google_map_component')
