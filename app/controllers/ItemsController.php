@@ -71,7 +71,7 @@ class ItemsController extends \BaseController {
 
 		$res = DB::select('SELECT *, 3956 * 2 * ASIN(SQRT( POWER(SIN((59.436961 - `lat`)*pi()/180 / 2), 2) +COS(59.436961*pi()/180)*COS(`lat`*pi()/180)*POWER(SIN((24.753575 - `lng`)*pi()/180 / 2), 2) )) as distance 
 		FROM `vl_addresses` WHERE `lng` between (24.753575-10/abs(cos(radians(59.436961))*69)) and ((24.753575+10/abs(cos(radians(59.436961))*69))) and `lat` between (59.436961-(10/69)) and (59.436961+(10/69)) 
-		having distance < 300 Order By Distance Limit 10');
+		having distance < 1000 Order By Distance Limit 10');
 
 		var_dump($res);
 		/*foreach($res as $k=>$val) {

@@ -62,11 +62,12 @@
 
     <fieldset>
         <legend>Step #4</legend>
+        @if( count($assets) > 0 )
+            <h3 class="text-center">choose from gallery</h3>
+            @include('gallery.gallery_list_menu_component', array('assets'=>$assets))
+            <h3 class="text-center"> OR <br> add new</h3>
+        @endif
 
-        <h3 class="text-center">choose from gallery</h3>
-        @include('gallery.gallery_list_menu_component', array('assets'=>$assets))
-
-        <h3 class="text-center"> OR <br> add new</h3>
         @include('gallery.upload_to_gallery_component')
     </fieldset>
 

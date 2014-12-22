@@ -1,4 +1,3 @@
-{{$assets}}
 <ul class="list-inline">
 @foreach ($assets as $key => $asset)
     <li>
